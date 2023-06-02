@@ -1,14 +1,31 @@
 {
-    "private": true,
-    "scripts": {
-        "dev": "vite",
-        "build": "vite build"
-    },
-    "devDependencies": {
-        "axios": "^1.1.2",
-        "laravel-vite-plugin": "^0.7.0",
-        "lodash": "^4.17.19",
-        "postcss": "^8.1.14",
-        "vite": "^3.0.0"
-    }
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "devDependencies": {
+    "axios": "^1.1.2",
+    "laravel-vite-plugin": "^0.7.0",
+    "lodash": "^4.17.19",
+    "postcss": "^8.1.14",
+    "vite": "^3.0.0"
+  },
+  "name": "es-dictionary-laravel-react-app",
+  "description": "<p align=\"center\"><a href=\"https://laravel.com\" target=\"_blank\"><img src=\"https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg\" width=\"400\" alt=\"Laravel Logo\"></a></p>",
+  "version": "1.0.0",
+  "main": "vite.config.js",
+  "directories": {
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DaoistFullStackApps/ES-Dictionary-CapstoneVer.git"
+  },
+  "author": "WD47p Group2",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DaoistFullStackApps/ES-Dictionary-CapstoneVer/issues"
+  },
+  "homepage": "https://github.com/DaoistFullStackApps/ES-Dictionary-CapstoneVer#readme"
 }
