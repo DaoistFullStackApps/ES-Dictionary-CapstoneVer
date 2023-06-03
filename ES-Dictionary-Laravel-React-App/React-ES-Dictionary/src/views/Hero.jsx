@@ -1,7 +1,6 @@
-import React from 'react'
+import React from "react";
+import "../index.css";
 
 export default function Hero() {
-  return (
-    <div>Hero</div>
-  )
+  return <div className="bg-gray-300">Hero</div>;
 }
