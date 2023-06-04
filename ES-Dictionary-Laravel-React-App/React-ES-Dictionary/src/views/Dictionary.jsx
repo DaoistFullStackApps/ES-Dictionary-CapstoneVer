@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+
+// description : The first code base you provided seems to be working fine. It is a React component called "Dictionary" that allows users to search for a term and displays the definition and an image related to that term. When the user enters a search term and clicks the "Search" button or presses Enter, it triggers the handleSearch function. This function calls fetchImage and fetchDictionary functions using Promise.all to fetch data from the Unsplash API and Merriam-Webster API respectively. Once the data is fetched, it updates the state variables searchTermHeading, dictionaryData, and imageData. The component then renders the search results, including the term heading, image, definitions, and pagination.
 
 export default function Dictionary() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -51,12 +53,14 @@ export default function Dictionary() {
     return definitions.map((entry, index) => (
       <div key={index} className="mb-4">
         <div className="mb-2">
-          <span className="bg-blue-200 text-blue-800 py-1 px-2 rounded mr-2">
+          <span className="bg-coffeeBrown text-black font-semibold py-1 px-2 rounded mr-2">
             {entry.hwi && entry.hwi.hw}
           </span>
-          <span className="bg-blue-200 text-blue-800 py-1 px-2 rounded mr-2">
-            {entry.fl}
-          </span>
+          {entry.fl && (
+            <span className="bg-coffeeBrown text-black italic py-1 px-2 rounded mr-2">
+              {entry.fl}
+            </span>
+          )}
         </div>
         {entry.shortdef && entry.shortdef.length > 0 && (
           <p>{entry.shortdef[0]}</p>
@@ -76,20 +80,22 @@ export default function Dictionary() {
           className={`${
             currentPage === 1
               ? "bg-gray-300 text-gray-500"
-              : "bg-blue-500 text-white"
-          } py-1 px-3 rounded-l focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              : "bg-coffeeBrown text-gray-800 "
+          }shadow-md shadow-coffeeDark py-1 px-3 rounded-l focus:outline-none focus:ring-2 focus:ring-coffeeBrown`}
           disabled={currentPage === 1}
           onClick={() => handlePageChange(currentPage - 1)}
         >
           Prev
         </button>
-        <span className="px-3">{currentPage}</span>
+        <span className="px-3 font-semibold underline text-coffeeDark">
+          {currentPage}
+        </span>
         <button
           className={`${
             currentPage === totalPages
               ? "bg-gray-300 text-gray-500"
-              : "bg-blue-500 text-white"
-          } py-1 px-3 rounded-r focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              : "bg-coffeeBrown text-gray-800"
+          }font-semibold shadow-md shadow-coffeeDark py-1 px-3 rounded-r focus:outline-none focus:ring-2 focus:ring-coffeeBrown`}
           disabled={currentPage === totalPages}
           onClick={() => handlePageChange(currentPage + 1)}
         >
@@ -101,7 +107,7 @@ export default function Dictionary() {
 
   return (
     <div
-      className="bg-blue-400 min-h-screen justify-center"
+      className="bg-coffee min-h-screen justify-center"
       style={{ paddingTop: "50px", paddingBottom: "50px" }}
     >
       <div className="mx-auto max-w-md mb-4 flex justify-evenly">
@@ -110,20 +116,22 @@ export default function Dictionary() {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           placeholder="Search"
-          className="w-3/4 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-3/4 px-4 py-2 border-2 border-coffeeBrown rounded-md focus:outline-double focus:ring-coffeeBrown focus:border-coffeeBrown"
           onKeyDown={handleKeyPress}
         />
 
         <button
           onClick={handleSearch}
-          className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="bg-coffeeBrown text-white py-2 px-4 rounded hover:bg-coffeeDark  focus:ring-coffeeDark"
         >
           Search
         </button>
       </div>
       {dictionaryData && imageData && (
-        <div className="max-w-md mx-auto bg-white rounded-lg shadow-xl p-4">
-          <h1 className="text-3xl font-bold mb-4">{searchTermHeading}</h1>{" "}
+        <div className="max-w-md mx-auto bg-coffeeMate rounded-lg border-4 border-solid border-coffeeBrown shadow-coffeeDark shadow-lg p-4">
+          <h1 className="text-3xl text-coffeeDark font-bold italic mb-4">
+            {searchTermHeading}
+          </h1>{" "}
           {/* Use the fixed search term heading */}
           <div className="mb-4">
             <img

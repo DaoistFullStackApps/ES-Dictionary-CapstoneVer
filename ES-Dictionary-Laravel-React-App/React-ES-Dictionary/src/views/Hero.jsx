@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 const MERRIAM_API_KEY = "98a198a3-a200-490a-ad48-98ac95b46d80";
-const UNSPLASH_ACCESS_KEY = "gVfJPtlmzZ4XoaVB4p5SdGe0ILjssdLMcDqR3FH5gn0";
-const MERRIAM_API_URL = "https://dictionaryapi.com/api/v3/references/collegiate/json/";
+const UNSPLASH_ACCESS_KEY = "";
+const MERRIAM_API_URL =
+  "https://dictionaryapi.com/api/v3/references/collegiate/json/";
 const UNSPLASH_API_URL = "https://api.unsplash.com/photos/random";
 
 export default function Hero() {
@@ -80,10 +81,10 @@ export default function Hero() {
     return definitions.map((entry, index) => (
       <div key={index} className="mb-4">
         <div className="mb-2">
-          <span className="bg-blue-200 text-blue-800 py-1 px-2 rounded mr-2">
+          <span className="bg-coffeeBrown text-black font-semibold py-1 px-2 rounded mr-2">
             {entry.hwi && entry.hwi.hw}
           </span>
-          <span className="bg-blue-200 text-blue-800 py-1 px-2 rounded mr-2">
+          <span className="bg-coffeeBrown text-black italic py-1 px-2 rounded mr-2">
             {entry.fl}
           </span>
         </div>
@@ -105,20 +106,20 @@ export default function Hero() {
           className={`${
             currentPage === 1
               ? "bg-gray-300 text-gray-500"
-              : "bg-blue-500 text-white"
-          } py-1 px-3 rounded-l focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              : "bg-coffeeBrown text-gray-800"
+          }font-semibold shadow-md shadow-coffeeDark py-1 px-3 rounded-l focus:outline-none focus:ring-2 focus:ring-coffeeBrown`}
           disabled={currentPage === 1}
           onClick={() => handlePageChange(currentPage - 1)}
         >
           Prev
         </button>
-        <span className="px-3">{currentPage}</span>
+        <span className="px-3 font-semibold underline text-coffeeDark">{currentPage}</span>
         <button
           className={`${
             currentPage === totalPages
               ? "bg-gray-300 text-gray-500"
-              : "bg-blue-500 text-white"
-          } py-1 px-3 rounded-r focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              : "bg-coffeeBrown text-gray-800"
+          }font-semibold shadow-md shadow-coffeeDark py-1 px-3 rounded-r focus:outline-none focus:ring-2 focus:ring-coffeeBrown`}
           disabled={currentPage === totalPages}
           onClick={() => handlePageChange(currentPage + 1)}
         >
@@ -129,30 +130,32 @@ export default function Hero() {
   };
 
   return (
-    <div className="bg-blue-400 min-h-screen justify-center py-20 ">
-      <div className="flex-1 min-w-0">
-        <h1 className="text-5xl font-bold text-white mb-8 text-center">
-          Discover New Words
-        </h1>
-        <h2 className="text-3xl text-white mb-8 text-center">
+    <div className="bg-coffee min-h-screen justify-center py-20 ">
+      <div className="flex-1 min-w-0 px-3">
+        <h1 className="text-5xl font-bold text-coffeeDark mb-8 text-center">
           Expand Your Vocabulary
+        </h1>
+        <h2 className="text-3xl font-semibold text-gray-800 mb-8 text-center">
+          Discover words and definitions
         </h2>
         <div className="flex justify-center">
           <Link
             to="/dictionary"
-            className="bg-white text-blue-500 py-2 px-6 rounded-full text-2xl font-semibold transition duration-300 hover:bg-blue-500 hover:text-white"
+            className="bg-coffeeMateB text-coffeeDark py-2 px-6 rounded-full text-2xl font-bold border-2 border-solid shadow-md shadow-coffeeDark border-coffeeDark transition duration-300 hover:bg-coffeeBrown hover:text-gray-800 "
           >
-            Explore
+            Learn a New Word Now!
           </Link>
         </div>
       </div>
       <div className="container mx-auto px-4 mt-16">
-        <h2 className="max-w-md mx-auto text-3xl font-bold text-white mb-8 ">
+        <h2 className="max-w-md mx-auto text-3xl font-bold text-gray-800 mb-4 ">
           Featured Word
         </h2>
         {definitionData.length > 0 ? (
-          <div className="max-w-md mx-auto bg-white rounded-lg shadow-xl p-4">
-            <h1 className="text-3xl font-bold mb-4">{randomWord}</h1>
+          <div className="max-w-md mx-auto bg-coffeeMate rounded-lg shadow-coffeeDark shadow-lg p-4 border-4 border-solid border-coffeeBrown">
+            <h1 className="text-3xl text-coffeeDark font-bold italic mb-4">
+              {randomWord}
+            </h1>
             <div className="mb-4">
               {imageData && (
                 <img
@@ -174,9 +177,9 @@ export default function Hero() {
             </div>
           </div>
         ) : (
-          <div className="max-w-md mx-auto bg-white rounded-lg shadow-xl p-4">
+          <div className="max-w-md mx-auto bg-coffeeMate rounded-lg border-4 border-solid border-coffeeBrown shadow-coffeeDark shadow-lg p-4">
             <h1 className="text-3xl font-bold m-auto flex justify-center">
-              Loading
+              Loading...
             </h1>
           </div>
         )}

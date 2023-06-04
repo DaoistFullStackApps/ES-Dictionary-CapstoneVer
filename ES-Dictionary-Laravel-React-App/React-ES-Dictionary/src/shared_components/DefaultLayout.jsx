@@ -1,11 +1,11 @@
 import React from "react";
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 
 export default function DefaultLayout() {
   return (
     <div>
-      <div className="bg-blue-500 text-white">
-        <h1 className="text-2xl font-semibold p-2">es-dictionary</h1>
+      <div className="bg-coffee text-black">
+        <Link className="text-2xl font-bold p-6 " to={'/hero'}>es-dictionary</Link>
       </div>
       <div className="childContainer">
         <Outlet />
