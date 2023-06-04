@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-const RANDOMWORD_API_KEY = "MaRBdB4b4g4k02ApBzvHjQ==q3vVu09pSG8zMPmR";
 const MERRIAM_API_KEY = "98a198a3-a200-490a-ad48-98ac95b46d80";
-const UNSPLASH_ACCESS_KEY = "";
-const RANDOMWORD_API_URL = "https://api.api-ninjas.com/v1/randomword";
-const MERRIAM_API_URL =
-  "https://dictionaryapi.com/api/v3/references/collegiate/json/";
+const UNSPLASH_ACCESS_KEY = "gVfJPtlmzZ4XoaVB4p5SdGe0ILjssdLMcDqR3FH5gn0";
+const MERRIAM_API_URL = "https://dictionaryapi.com/api/v3/references/collegiate/json/";
 const UNSPLASH_API_URL = "https://api.unsplash.com/photos/random";
 
 export default function Hero() {
@@ -22,21 +19,18 @@ export default function Hero() {
 
   const fetchRandomWord = async () => {
     try {
-      const response = await fetch(RANDOMWORD_API_URL, {
-        headers: {
-          "X-Api-Key": RANDOMWORD_API_KEY,
-        },
-      });
+      const response = await fetch(
+        "https://random-word-api.vercel.app/api?words=1"
+      );
 
       if (!response.ok) {
         throw new Error("Failed to fetch random word");
       }
 
       const data = await response.json();
-      const word = data.word;
+      const word = data[0];
       setRandomWord(word);
-
-      fetchWordData(word);
+      await fetchWordData(word);
     } catch (error) {
       console.error("Error:", error);
     }
@@ -69,12 +63,15 @@ export default function Hero() {
       console.error("Error:", error);
     }
   };
+
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
 
   const renderDefinitions = () => {
-    if (!definitionData) return null;
+    if (!definitionData || definitionData.length === 0) {
+      return <p>No definitions available</p>;
+    }
 
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
@@ -153,7 +150,7 @@ export default function Hero() {
         <h2 className="max-w-md mx-auto text-3xl font-bold text-white mb-8 ">
           Featured Word
         </h2>
-        {randomWord ? (
+        {definitionData.length > 0 ? (
           <div className="max-w-md mx-auto bg-white rounded-lg shadow-xl p-4">
             <h1 className="text-3xl font-bold mb-4">{randomWord}</h1>
             <div className="mb-4">
