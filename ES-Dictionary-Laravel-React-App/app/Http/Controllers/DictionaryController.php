@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Word;
 use Illuminate\Http\Request;
 
-class WordsController extends Controller
+class DictionaryController extends Controller
 {
     public function index()
     {
@@ -26,10 +26,16 @@ class WordsController extends Controller
         return response()->json($word, 201);
     }
 
-    public function show($id)
+    public function show($word)
     {
-        $word = Word::findOrFail($id);
-        return response()->json($word);
+        $existingWord = Word::where('word', $word)->first();
+
+        if ($existingWord) {
+            return response()->json($existingWord);
+        }
+
+        // If the word doesn't exist in the database, you can handle it accordingly
+        return response()->json(['error' => 'Word not found'], 404);
     }
 
     public function update(Request $request, $id)

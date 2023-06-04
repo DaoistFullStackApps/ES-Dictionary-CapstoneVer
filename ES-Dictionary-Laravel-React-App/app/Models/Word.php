@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Word extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'word',
+        'definition',
+        'part_of_speech',
+        'image_url',
+    ];
+
+    // Additional model logic, relationships, etc.
 }
