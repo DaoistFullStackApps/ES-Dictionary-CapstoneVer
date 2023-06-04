@@ -1,11 +1,13 @@
 import React from "react";
+import {BookOpenIcon} from "@heroicons/react/24/outline";
 import { Link, Outlet } from "react-router-dom";
 
 export default function DefaultLayout() {
   return (
     <div>
-      <div className="bg-coffee text-black">
-        <Link className="text-2xl font-bold p-6 " to={'/hero'}>es-dictionary</Link>
+      <div className="flex flex-row p-3 my-auto items-center bg-coffee text-black space-x-1">
+       <BookOpenIcon className="w-8"/>
+        <Link className="text-2xl font-bold mb-2" to={'/hero'}>es-dictionary</Link>
       </div>
       <div className="childContainer">
         <Outlet />
