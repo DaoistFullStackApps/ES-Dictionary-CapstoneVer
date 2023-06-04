@@ -107,49 +107,53 @@ export default function Dictionary() {
 
   return (
     <div
-      className="bg-coffee min-h-screen justify-center"
+      className="bg-coffee flex min-h-screen justify-center items-center"
       style={{ paddingTop: "50px", paddingBottom: "50px" }}
     >
-      <div className="mx-auto max-w-md mb-4 flex justify-evenly">
-        <input
-          type="text"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="Search"
-          className="w-3/4 px-4 py-2 border-2 border-coffeeBrown rounded-md focus:outline-double focus:ring-coffeeBrown focus:border-coffeeBrown"
-          onKeyDown={handleKeyPress}
-        />
+      <div className="w-2/4 min-w-max mx-10">
+        <div className="mx-auto mb-4 flex justify-evenly space-x-4">
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="enter a word"
+            className="w-3/4 px-4 py-2 font-semibold border-2 border-coffeeBrown rounded-md  focus:outline-double focus:ring-coffeeDark focus:border-coffeeDark"
+            onKeyDown={handleKeyPress}
+          />
 
-        <button
-          onClick={handleSearch}
-          className="bg-coffeeBrown text-white py-2 px-4 rounded hover:bg-coffeeDark  focus:ring-coffeeDark"
-        >
-          Search
-        </button>
-      </div>
-      {dictionaryData && imageData && (
-        <div className="max-w-md mx-auto bg-coffeeMate rounded-lg border-4 border-solid border-coffeeBrown shadow-coffeeDark shadow-lg p-4">
-          <h1 className="text-3xl text-coffeeDark font-bold italic mb-4">
-            {searchTermHeading}
-          </h1>{" "}
-          {/* Use the fixed search term heading */}
-          <div className="mb-4">
-            <img
-              src={imageData}
-              alt={searchTerm}
-              className="w-full rounded object-cover"
-              style={{ maxHeight: "200px", minHeight: "200px" }}
-            />
-          </div>
-          <div
-            className="flex flex-col"
-            style={{ maxHeight: "140px", minHeight: "140px" }}
+          <button
+            onClick={handleSearch}
+            className="bg-coffeeBrown text-white text-lg font-semibold italic py-2 px-4 rounded shadow-sm shadow-coffeeDark hover:bg-coffeeDark  focus:ring-coffeeDark"
           >
-            <div className="flex-1 overflow-y-auto">{renderDefinitions()}</div>
-            <div className="mt-4">{renderPagination()}</div>
-          </div>
+            Search
+          </button>
         </div>
-      )}
+        {dictionaryData && imageData && (
+          <div className="max-w-md mx-auto bg-coffeeMate rounded-lg border-4 border-solid border-coffeeBrown shadow-coffeeDark shadow-sm p-4">
+            <h1 className="text-3xl text-coffeeDark font-bold italic mb-4">
+              {searchTermHeading}
+            </h1>{" "}
+            {/* Use the fixed search term heading */}
+            <div className="mb-4">
+              <img
+                src={imageData}
+                alt={searchTerm}
+                className="w-full rounded object-cover border-2 border-coffeeDark"
+                style={{ maxHeight: "200px", minHeight: "200px" }}
+              />
+            </div>
+            <div
+              className="flex flex-col"
+              style={{ maxHeight: "140px", minHeight: "140px" }}
+            >
+              <div className="flex-1 overflow-y-auto">
+                {renderDefinitions()}
+              </div>
+              <div className="mt-4">{renderPagination()}</div>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
