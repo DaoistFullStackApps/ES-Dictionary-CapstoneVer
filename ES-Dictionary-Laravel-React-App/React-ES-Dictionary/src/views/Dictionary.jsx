@@ -110,8 +110,8 @@ export default function Dictionary() {
       className="bg-coffee flex min-h-screen justify-center items-center"
       style={{ paddingTop: "50px", paddingBottom: "50px" }}
     >
-      <div className="w-2/4 min-w-max mx-10">
-        <div className="mx-auto mb-4 flex justify-evenly space-x-4">
+      <div className="w-2/4 min-w-max mx-auto">
+        <div className="max-w-md mx-auto mb-4 flex justify-evenly space-x-4">
           <input
             type="text"
             value={searchTerm}

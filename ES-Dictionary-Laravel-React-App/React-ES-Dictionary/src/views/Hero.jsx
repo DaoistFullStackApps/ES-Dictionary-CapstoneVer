@@ -113,7 +113,9 @@ export default function Hero() {
         >
           Prev
         </button>
-        <span className="px-3 font-semibold underline text-coffeeDark">{currentPage}</span>
+        <span className="px-3 font-semibold underline text-coffeeDark">
+          {currentPage}
+        </span>
         <button
           className={`${
             currentPage === totalPages
@@ -130,59 +132,61 @@ export default function Hero() {
   };
 
   return (
-    <div className="bg-coffee min-h-screen justify-center py-20 ">
-      <div className="flex-1 min-w-0 px-3">
-        <h1 className="text-5xl font-bold text-coffeeDark mb-8 text-center">
-          Expand Your Vocabulary
-        </h1>
-        <h2 className="text-3xl font-semibold text-gray-800 mb-8 text-center">
-          Discover words and definitions
-        </h2>
-        <div className="flex justify-center">
-          <Link
-            to="/dictionary"
-            className="bg-coffeeMateB text-coffeeDark py-2 px-6 rounded-full text-2xl font-bold border-2 border-solid shadow-md shadow-coffeeDark border-coffeeDark transition duration-300 hover:bg-coffeeBrown hover:text-gray-800 "
-          >
-            Learn a New Word Now!
-          </Link>
-        </div>
-      </div>
-      <div className="container mx-auto px-4 mt-16">
-        <h2 className="max-w-md mx-auto text-3xl font-bold text-gray-800 mb-4 ">
-          Featured Word
-        </h2>
-        {definitionData.length > 0 ? (
-          <div className="max-w-md mx-auto bg-coffeeMate rounded-lg shadow-coffeeDark shadow-sm p-4 border-4 border-solid border-coffeeBrown">
-            <h1 className="text-3xl text-coffeeDark font-bold italic mb-4">
-              {randomWord}
-            </h1>
-            <div className="mb-4">
-              {imageData && (
-                <img
-                  src={imageData}
-                  alt={randomWord}
-                  className="w-full rounded object-cover"
-                  style={{ maxHeight: "200px", minHeight: "200px" }}
-                />
-              )}
-            </div>
-            <div
-              className="flex flex-col"
-              style={{ maxHeight: "140px", minHeight: "140px" }}
+    <div className="bg-coffee flex min-h-screen justify-center items-center">
+      <div className="min-w-max ">
+        <div className="flex-1 px-2">
+          <h1 className="text-5xl font-bold text-coffeeDark mb-8 text-center">
+            Expand Your Vocabulary
+          </h1>
+          <h2 className="text-3xl font-semibold text-gray-800 mb-8 text-center">
+            Discover words and definitions
+          </h2>
+          <div className="flex justify-center">
+            <Link
+              to="/dictionary"
+              className="bg-coffeeMateB text-coffeeDark py-2 px-6 rounded-full text-2xl font-bold border-2 border-solid shadow-md shadow-coffeeDark border-coffeeDark transition duration-300 hover:bg-coffeeBrown hover:text-gray-800 "
             >
-              <div className="flex-1 overflow-y-auto">
-                {renderDefinitions()}
+              Learn a New Word Now!
+            </Link>
+          </div>
+        </div>
+        <div className="container mx-auto px-4 mt-16">
+          <h2 className="max-w-md mx-auto text-3xl font-bold text-gray-800 mb-4 ">
+            Featured Word
+          </h2>
+          {definitionData.length > 0 ? (
+            <div className="max-w-md mx-auto bg-coffeeMate rounded-lg shadow-coffeeDark shadow-sm p-4 border-4 border-solid border-coffeeBrown">
+              <h1 className="text-3xl text-coffeeDark font-bold italic mb-4">
+                {randomWord}
+              </h1>
+              <div className="mb-4">
+                {imageData && (
+                  <img
+                    src={imageData}
+                    alt={randomWord}
+                    className="w-full rounded object-cover"
+                    style={{ maxHeight: "200px", minHeight: "200px" }}
+                  />
+                )}
               </div>
-              <div className="mt-4">{renderPagination()}</div>
+              <div
+                className="flex flex-col"
+                style={{ maxHeight: "140px", minHeight: "140px" }}
+              >
+                <div className="flex-1 overflow-y-auto">
+                  {renderDefinitions()}
+                </div>
+                <div className="mt-4">{renderPagination()}</div>
+              </div>
             </div>
-          </div>
-        ) : (
-          <div className="max-w-md mx-auto bg-coffeeMate rounded-lg border-4 border-solid border-coffeeBrown shadow-coffeeDark shadow-sm p-4">
-            <h1 className="text-3xl font-bold m-auto flex justify-center">
-              Loading...
-            </h1>
-          </div>
-        )}
+          ) : (
+            <div className="max-w-md mx-auto bg-coffeeMate rounded-lg border-4 border-solid border-coffeeBrown shadow-coffeeDark shadow-sm p-4">
+              <h1 className="text-3xl font-bold m-auto flex justify-center">
+                Loading...
+              </h1>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
