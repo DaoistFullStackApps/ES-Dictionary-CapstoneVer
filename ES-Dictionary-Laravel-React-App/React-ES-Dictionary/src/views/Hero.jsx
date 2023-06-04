@@ -1,92 +1,90 @@
-import React from "react";
-import "../index.css";
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 export default function Hero() {
-  return (
-    <>
-      <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-        <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+  const [randomWords, setRandomWords] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchRandomWords = async () => {
+      const MerriamWebKey = "98a198a3-a200-490a-ad48-98ac95b46d80";
+      const MerriamWebUrl = `https://dictionaryapi.com/api/v3/references/collegiate/json/ass?key=${MerriamWebKey}`;
+      const response = await fetch(MerriamWebUrl);
+      const data = await response.json();
+      setRandomWords(data);
+
+      // Store randomWords in localStorage
+      localStorage.setItem("randomWords", JSON.stringify(data));
+
+      setIsLoading(false);
+    };
+
+    // Check if randomWords is stored in localStorage
+    const storedRandomWords = localStorage.getItem("randomWords");
+    if (storedRandomWords) {
+      setRandomWords(JSON.parse(storedRandomWords));
+      setIsLoading(false);
+    } else {
+      fetchRandomWords();
+    }
+  }, []);
+
+  const WordCard = ({ word }) => {
+    const [imageData, setImageData] = useState(null);
+
+    useEffect(() => {
+      const fetchImage = async () => {
+        const UnsplashKey = "gVfJPtlmzZ4XoaVB4p5SdGe0ILjssdLMcDqR3FH5gn0";
+        const UnsplashUrl = `https://api.unsplash.com/photos/random?query=${word}&client_id=${UnsplashKey}`;
+        const response = await fetch(UnsplashUrl);
+        const data = await response.json();
+        setImageData(data.urls.regular);
+      };
+
+      fetchImage();
+    }, [word]);
+
+    return (
+      <div className="max-w-sm mx-auto bg-white rounded-lg shadow-xl p-4 mb-4">
+        <div className="mb-2">
           <img
-            className="mx-auto h-10 w-auto"
-            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-            alt="Your Company"
+            src={imageData}
+            alt={word}
+            className="w-full rounded object-cover"
+            style={{ maxHeight: "200px", minHeight: "200px" }}
           />
-          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-            Sign in to your account
-          </h2>
         </div>
-
-        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6" action="#" method="POST">
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Email address
-              </label>
-              <div className="mt-2">
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-
-            <div>
-              <div className="flex items-center justify-between">
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Password
-                </label>
-                <div className="text-sm">
-                  <a
-                    href="#"
-                    className="font-semibold text-indigo-600 hover:text-indigo-500"
-                  >
-                    Forgot password?
-                  </a>
-                </div>
-              </div>
-              <div className="mt-2">
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="current-password"
-                  required
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-
-            <div>
-              <button
-                type="submit"
-                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              >
-                Sign in
-              </button>
-            </div>
-          </form>
-
-          <p className="mt-10 text-center text-sm text-gray-500">
-            Not a member?{" "}
-            <a
-              href="#"
-              className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
-            >
-              Start a 14 day free trial
-            </a>
-          </p>
-        </div>
+        <h2 className="text-xl font-bold mb-2">{word}</h2>
+        {word.definition && <p className="text-gray-600">{word.definition}</p>}
       </div>
-    </>
+    );
+  };
+
+  return (
+    <div className="bg-blue-500 py-20 text-white">
+      <div className="container mx-auto text-center">
+        <h1 className="text-5xl font-bold mb-8">Discover New Words</h1>
+        <p className="text-xl mb-8">
+          Expand your vocabulary and explore their definitions
+        </p>
+        <Link
+          to="/dictionary"
+          className="bg-white text-blue-500 py-2 px-6 rounded-lg font-bold hover:bg-blue-100 hover:text-blue-700 transition duration-300"
+        >
+          Learn New Words Now
+        </Link>
+      </div>
+      <div className="container mx-auto mt-20">
+        {isLoading ? (
+          <p>Loading...</p>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            {randomWords.slice(0, 2).map((word, index) => (
+              <WordCard key={index} word={word.hwi?.hw || ""} />
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
