@@ -21,7 +21,7 @@ export default function Dictionary() {
   };
 
   const fetchImage = async () => {
-    const UnsplashKey = "Fj2N2fNmwFAPuSC_agE73Mfy0Sv9bqtXS3XhGEcCWSY";
+    const UnsplashKey = "gVfJPtlmzZ4XoaVB4p5SdGe0ILjssdLMcDqR3FH5gn0";
     const UnsplashUrl = `https://api.unsplash.com/photos/random?query=${searchTerm}&client_id=${UnsplashKey}`;
     const response = await fetch(UnsplashUrl);
     const data = await response.json();
@@ -101,10 +101,10 @@ export default function Dictionary() {
 
   return (
     <div
-      className="bg-gray-100 min-h-screen justify-center"
+      className="bg-blue-400 min-h-screen justify-center"
       style={{ paddingTop: "50px", paddingBottom: "50px" }}
     >
-      <div className="mx-auto w-3/5 mb-4 flex justify-evenly">
+      <div className="mx-auto max-w-md mb-4 flex justify-evenly">
         <input
           type="text"
           value={searchTerm}
@@ -130,12 +130,12 @@ export default function Dictionary() {
               src={imageData}
               alt={searchTerm}
               className="w-full rounded object-cover"
-              style={{ maxHeight: "300px", minHeight: "300px" }}
+              style={{ maxHeight: "200px", minHeight: "200px" }}
             />
           </div>
           <div
             className="flex flex-col"
-            style={{ maxHeight: "220px", minHeight: "220px" }}
+            style={{ maxHeight: "140px", minHeight: "140px" }}
           >
             <div className="flex-1 overflow-y-auto">{renderDefinitions()}</div>
             <div className="mt-4">{renderPagination()}</div>
