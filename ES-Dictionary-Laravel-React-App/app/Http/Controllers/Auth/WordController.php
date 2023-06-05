@@ -26,29 +26,29 @@ class WordController extends Controller
             'message' => 'Word stored successfully.'
         ]);
     }
-    
-    public function check($word)
-    {
-        // Check if the word exists in the database
-        $word = Word::where('word', $word)->first();
 
-        if ($word) {
-            // Word exists, create a payload and bundle it in a JSON response
-            $payload = [
+    public function check(Request $request)
+    {
+        $word = $request->input('word');
+
+        // Check if the word exists in the database
+        $wordExists = Word::where('word', $word)->exists();
+
+        if ($wordExists) {
+            // Word exists, return a response indicating that
+            return response()->json([
+                'exists' => true,
                 'word' => $word,
                 'message' => 'Word found in the database.'
-            ];
+            ]);
         } else {
-            // Word doesn't exist
-            $payload = [
+            // Word doesn't exist, return a response indicating that
+            return response()->json([
+                'exists' => false,
                 'message' => 'Word not found in the database.'
-            ];
+            ]);
         }
-
-        return response()->json($payload);
     }
-
-
 
     public function update(UpdateRequest $request)
     {
@@ -65,6 +65,7 @@ class WordController extends Controller
             compact('definitionData')
         ], 204);
     }
+
     public function destroy(Request $request)
     {
         /** @var Word $word */

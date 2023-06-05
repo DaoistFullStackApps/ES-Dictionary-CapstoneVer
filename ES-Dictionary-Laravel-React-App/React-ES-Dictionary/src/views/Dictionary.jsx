@@ -14,24 +14,38 @@ export default function Dictionary() {
   const imgURLRef = useRef(null);
 
   const handleSearch = async () => {
-    await Promise.all([fetchImage(), fetchDictionary()]);
     setSearchTermHeading(searchTerm);
     setSearchTerm("");
-    const payload = await createPayload();
-    console.log(payload);
-    axiosClient.get("/").then().catch();
 
-    axiosClient
-      .post("/store", payload)
-      .then(({ data }) => {
-        console.log(`you have searched the word ${data.word}!`)
-      })
-      .catch((err) => {
-        const response = err.reseponse;
-        if (response && response.status === 422) {
-          console.log(response.data.errors);
-        }
-      });
+    try {
+      const { data } = await axiosClient.post("/check", { word: searchTerm });
+
+      if (data.exists) {
+        console.log(`You have searched the word ${data.word}!`);
+        setDictionaryData(data.dictionaryData);
+        setCurrentPage(1);
+        return;
+      }
+
+      await Promise.all([fetchImage(), fetchDictionary()]);
+
+      const payload = await createPayload();
+      console.log(payload);
+
+      axiosClient
+        .post("/store", payload)
+        .then(({ data }) => {
+          console.log(`You have searched the word ${data.word}!`);
+        })
+        .catch((err) => {
+          const response = err.response;
+          if (response && response.status === 422) {
+            console.log(response.data.errors);
+          }
+        });
+    } catch (error) {
+      console.log("Error checking word:", error);
+    }
   };
 
   const handleKeyPress = (e) => {
@@ -56,18 +70,28 @@ export default function Dictionary() {
   const fetchImage = async () => {
     const UnsplashKey = "Fj2N2fNmwFAPuSC_agE73Mfy0Sv9bqtXS3XhGEcCWSY";
     const UnsplashUrl = `https://api.unsplash.com/photos/random?query=${searchTerm}&client_id=${UnsplashKey}`;
-    const response = await fetch(UnsplashUrl);
-    const data = await response.json();
-    setImageData(data.urls.regular);
+
+    try {
+      const response = await fetch(UnsplashUrl);
+      const data = await response.json();
+      setImageData(data.urls.regular);
+    } catch (error) {
+      console.log("Error fetching image:", error);
+    }
   };
 
   const fetchDictionary = async () => {
     const MerriamWebKey = "98a198a3-a200-490a-ad48-98ac95b46d80";
     const MerriamWebUrl = `https://dictionaryapi.com/api/v3/references/collegiate/json/${searchTerm}?key=${MerriamWebKey}`;
-    const response = await fetch(MerriamWebUrl);
-    const data = await response.json();
-    setDictionaryData(data);
-    setCurrentPage(1);
+
+    try {
+      const response = await fetch(MerriamWebUrl);
+      const data = await response.json();
+      setDictionaryData(data);
+      setCurrentPage(1);
+    } catch (error) {
+      console.log("Error fetching dictionary data:", error);
+    }
   };
 
   const handlePageChange = (pageNumber) => {
@@ -111,11 +135,10 @@ export default function Dictionary() {
     return (
       <div className="flex justify-center items-center mt-4">
         <button
-          className={`${
-            currentPage === 1
+          className={`${currentPage === 1
               ? "bg-gray-300 text-gray-500"
               : "bg-coffeeBrown text-gray-800 "
-          }shadow-md shadow-coffeeDark py-1 px-3 rounded-l focus:outline-none focus:ring-2 focus:ring-coffeeBrown`}
+            }shadow-md shadow-coffeeDark py-1 px-3 rounded-l focus:outline-none focus:ring-2 focus:ring-coffeeBrown`}
           disabled={currentPage === 1}
           onClick={() => handlePageChange(currentPage - 1)}
         >
@@ -125,11 +148,10 @@ export default function Dictionary() {
           {currentPage}
         </span>
         <button
-          className={`${
-            currentPage === totalPages
+          className={`${currentPage === totalPages
               ? "bg-gray-300 text-gray-500"
               : "bg-coffeeBrown text-gray-800"
-          }font-semibold shadow-md shadow-coffeeDark py-1 px-3 rounded-r focus:outline-none focus:ring-2 focus:ring-coffeeBrown`}
+            }font-semibold shadow-md shadow-coffeeDark py-1 px-3 rounded-r focus:outline-none focus:ring-2 focus:ring-coffeeBrown`}
           disabled={currentPage === totalPages}
           onClick={() => handlePageChange(currentPage + 1)}
         >
@@ -150,7 +172,7 @@ export default function Dictionary() {
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="enter a word"
+            placeholder="Enter a word"
             className="w-3/4 px-4 py-2 font-semibold border-2 border-coffeeBrown rounded-md  focus:outline-double focus:ring-coffeeDark focus:border-coffeeDark"
             onKeyDown={handleKeyPress}
           />
