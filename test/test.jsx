@@ -1,42 +1,51 @@
 import React, { useRef, useState } from "react";
 import axiosClient from "../axios-client.js";
 
+// Component for the Dictionary functionality
 export default function Dictionary() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [searchTermHeading, setSearchTermHeading] = useState("");
-  const [dictionaryData, setDictionaryData] = useState(null);
-  const [imageData, setImageData] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 1;
+  // State variables
+  const [searchTerm, setSearchTerm] = useState(""); // Input search term
+  const [searchTermHeading, setSearchTermHeading] = useState(""); // Heading for the search term
+  const [dictionaryData, setDictionaryData] = useState(null); // Dictionary data
+  const [imageData, setImageData] = useState(null); // Image data
+  const [currentPage, setCurrentPage] = useState(1); // Current page number
+  const itemsPerPage = 1; // Number of items to display per page
+
+  // References for DOM elements
   const wordRef = useRef(null);
   const definitionRef = useRef(null);
   const posRef = useRef(null);
   const imgURLRef = useRef(null);
 
+  // Function to handle the search action
   const handleSearch = async () => {
-    setSearchTermHeading(searchTerm);
-    setSearchTerm("");
+    setSearchTermHeading(searchTerm); // Update the search term heading
+    setSearchTerm(""); // Clear the search term input
 
     try {
-      const response = await axiosClient.post("/check", { word: searchTerm });
-      const { data } = response;
+      // Send a POST request to check if the word exists in the database
+      const { data } = await axiosClient.post("/check", { word: searchTerm });
 
       if (data.exists) {
-        console.log(`You have searched the word ${data.word.word}!`);
+        // If the word exists in the database, update the dictionary data and go to the first page
+        console.log(`You have searched the word ${data.word}!`);
         setDictionaryData(data.dictionaryData);
         setCurrentPage(1);
         return;
       }
 
+      // If the word is not found in the database, fetch image and dictionary data
       await Promise.all([fetchImage(), fetchDictionary()]);
 
+      // Create the payload for storing the word in the database
       const payload = await createPayload();
       console.log(payload);
 
+      // Send a POST request to store the word in the database
       axiosClient
         .post("/store", payload)
-        .then(({ word }) => {
-          console.log(`You have searched the word ${word.word}!`);
+        .then(({ data }) => {
+          console.log(`You have searched the word ${data.word}!`);
         })
         .catch((err) => {
           const response = err.response;
@@ -49,25 +58,26 @@ export default function Dictionary() {
     }
   };
 
+  // Function to handle the "Enter" key press
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       handleSearch();
     }
   };
 
+  // Function to create the payload for storing the word in the database
   const createPayload = async () => {
     await Promise.all([fetchImage(), fetchDictionary()]);
 
     return {
       word: wordRef.current.textContent,
-      definition: definitionRef.current
-        ? definitionRef.current.textContent
-        : "",
+      definition: definitionRef.current ? definitionRef.current.textContent : "",
       part_of_speech: posRef.current ? posRef.current.textContent : "",
       image_url: imgURLRef.current ? imgURLRef.current.src : "",
     };
   };
 
+  // Function to fetch the image data from the Unsplash API
   const fetchImage = async () => {
     const UnsplashKey = "Fj2N2fNmwFAPuSC_agE73Mfy0Sv9bqtXS3XhGEcCWSY";
     const UnsplashUrl = `https://api.unsplash.com/photos/random?query=${searchTerm}&client_id=${UnsplashKey}`;
@@ -81,6 +91,7 @@ export default function Dictionary() {
     }
   };
 
+  // Function to fetch the dictionary data from the Merriam-Webster API
   const fetchDictionary = async () => {
     const MerriamWebKey = "98a198a3-a200-490a-ad48-98ac95b46d80";
     const MerriamWebUrl = `https://dictionaryapi.com/api/v3/references/collegiate/json/${searchTerm}?key=${MerriamWebKey}`;
@@ -95,10 +106,12 @@ export default function Dictionary() {
     }
   };
 
+  // Function to handle page changes
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
 
+  // Function to render the definitions
   const renderDefinitions = () => {
     if (!dictionaryData) return null;
 
@@ -113,10 +126,7 @@ export default function Dictionary() {
             {entry.hwi && entry.hwi.hw}
           </span>
           {entry.fl && (
-            <span
-              className="bg-coffeeBrown text-black italic py-1 px-2 rounded mr-2"
-              ref={posRef}
-            >
+            <span className="bg-coffeeBrown text-black italic py-1 px-2 rounded mr-2" ref={posRef}>
               {entry.fl}
             </span>
           )}
@@ -128,6 +138,7 @@ export default function Dictionary() {
     ));
   };
 
+  // Function to render the pagination
   const renderPagination = () => {
     if (!dictionaryData || dictionaryData.length <= itemsPerPage) return null;
 
@@ -137,9 +148,7 @@ export default function Dictionary() {
       <div className="flex justify-center items-center mt-4">
         <button
           className={`${
-            currentPage === 1
-              ? "bg-gray-300 text-gray-500"
-              : "bg-coffeeBrown text-gray-800 "
+            currentPage === 1 ? "bg-gray-300 text-gray-500" : "bg-coffeeBrown text-gray-800 "
           }shadow-md shadow-coffeeDark py-1 px-3 rounded-l focus:outline-none focus:ring-2 focus:ring-coffeeBrown`}
           disabled={currentPage === 1}
           onClick={() => handlePageChange(currentPage - 1)}
@@ -151,9 +160,7 @@ export default function Dictionary() {
         </span>
         <button
           className={`${
-            currentPage === totalPages
-              ? "bg-gray-300 text-gray-500"
-              : "bg-coffeeBrown text-gray-800"
+            currentPage === totalPages ? "bg-gray-300 text-gray-500" : "bg-coffeeBrown text-gray-800"
           }font-semibold shadow-md shadow-coffeeDark py-1 px-3 rounded-r focus:outline-none focus:ring-2 focus:ring-coffeeBrown`}
           disabled={currentPage === totalPages}
           onClick={() => handlePageChange(currentPage + 1)}
@@ -164,57 +171,35 @@ export default function Dictionary() {
     );
   };
 
+  // JSX code for rendering the Dictionary component
   return (
     <div
       className="bg-coffee flex min-h-screen justify-center items-center"
       style={{ paddingTop: "50px", paddingBottom: "50px" }}
     >
-      <div className="w-2/4 mx-auto min-w-full">
-        <div className="max-w-md mx-auto mb-4 flex justify-evenly space-x-4">
+      <div className="w-96">
+        <h1 className="text-4xl font-bold text-center mb-6">Dictionary</h1>
+        <div className="flex items-center mb-6">
           <input
             type="text"
+            className="border border-gray-300 py-2 px-3 w-full rounded-l focus:outline-none focus:ring-2 focus:ring-coffeeBrown"
+            placeholder="Enter a word"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Enter a word"
-            className="w-3/4 px-4 py-2 font-semibold border-2 border-coffeeBrown rounded-md  focus:outline-double focus:ring-coffeeDark focus:border-coffeeDark"
-            onKeyDown={handleKeyPress}
+            onKeyPress={handleKeyPress}
           />
-
           <button
+            className="bg-coffeeBrown text-white py-2 px-4 rounded-r focus:outline-none focus:ring-2 focus:ring-coffeeBrown"
             onClick={handleSearch}
-            className="bg-coffeeBrown text-white text-lg font-semibold italic py-2 px-4 rounded shadow-sm shadow-coffeeDark hover:bg-coffeeDark  focus:ring-coffeeDark"
           >
             Search
           </button>
         </div>
-        {dictionaryData && imageData && (
-          <div className="max-w-md mx-auto bg-coffeeMate rounded-lg border-4 border-solid border-coffeeBrown shadow-coffeeDark shadow-sm p-4">
-            <h1
-              className="text-3xl text-coffeeDark font-bold italic mb-4"
-              ref={wordRef}
-            >
-              {searchTermHeading}
-            </h1>
-            <div className="mb-4">
-              <img
-                ref={imgURLRef}
-                src={imageData}
-                alt={searchTerm}
-                className="w-full rounded object-cover border-2 border-coffeeDark"
-                style={{ maxHeight: "200px", minHeight: "200px" }}
-              />
-            </div>
-            <div
-              className="flex flex-col"
-              style={{ maxHeight: "140px", minHeight: "140px" }}
-            >
-              <div className="flex-1 overflow-y-auto">
-                {renderDefinitions()}
-              </div>
-              <div className="mt-4">{renderPagination()}</div>
-            </div>
-          </div>
-        )}
+        <h2 className="text-xl font-semibold text-center mb-4">
+          {searchTermHeading}
+        </h2>
+        {renderDefinitions()}
+        {renderPagination()}
       </div>
     </div>
   );
