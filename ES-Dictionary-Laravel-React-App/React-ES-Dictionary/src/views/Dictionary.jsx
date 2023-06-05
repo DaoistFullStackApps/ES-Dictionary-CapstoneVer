@@ -1,19 +1,23 @@
-import React, { useEffect, useState } from "react";
-
-// description : The first code base you provided seems to be working fine. It is a React component called "Dictionary" that allows users to search for a term and displays the definition and an image related to that term. When the user enters a search term and clicks the "Search" button or presses Enter, it triggers the handleSearch function. This function calls fetchImage and fetchDictionary functions using Promise.all to fetch data from the Unsplash API and Merriam-Webster API respectively. Once the data is fetched, it updates the state variables searchTermHeading, dictionaryData, and imageData. The component then renders the search results, including the term heading, image, definitions, and pagination.
+import React, { useRef, useState } from "react";
 
 export default function Dictionary() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [searchTermHeading, setSearchTermHeading] = useState(""); // New state for the fixed search term
+  const [searchTermHeading, setSearchTermHeading] = useState("");
   const [dictionaryData, setDictionaryData] = useState(null);
   const [imageData, setImageData] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 1;
+  const wordRef = useRef(null);
+  const definitionRef = useRef(null);
+  const posRef = useRef(null);
+  const imgURLRef = useRef(null);
 
   const handleSearch = async () => {
     await Promise.all([fetchImage(), fetchDictionary()]);
-    setSearchTermHeading(searchTerm); // Update the fixed search term heading
-    setSearchTerm(""); // Clear the search term input
+    setSearchTermHeading(searchTerm);
+    setSearchTerm("");
+    const payload = await createPayload();
+    console.log(payload);
   };
 
   const handleKeyPress = (e) => {
@@ -22,8 +26,21 @@ export default function Dictionary() {
     }
   };
 
+  const createPayload = async () => {
+    await Promise.all([fetchImage(), fetchDictionary()]);
+
+    return {
+      word: wordRef.current.textContent,
+      definition: definitionRef.current
+        ? definitionRef.current.textContent
+        : "",
+      part_of_speech: posRef.current ? posRef.current.textContent : "",
+      img_url: imgURLRef.current ? imgURLRef.current.src : "",
+    };
+  };
+
   const fetchImage = async () => {
-    const UnsplashKey = "gVfJPtlmzZ4XoaVB4p5SdGe0ILjssdLMcDqR3FH5gn0";
+    const UnsplashKey = "Fj2N2fNmwFAPuSC_agE73Mfy0Sv9bqtXS3XhGEcCWSY";
     const UnsplashUrl = `https://api.unsplash.com/photos/random?query=${searchTerm}&client_id=${UnsplashKey}`;
     const response = await fetch(UnsplashUrl);
     const data = await response.json();
@@ -57,13 +74,16 @@ export default function Dictionary() {
             {entry.hwi && entry.hwi.hw}
           </span>
           {entry.fl && (
-            <span className="bg-coffeeBrown text-black italic py-1 px-2 rounded mr-2">
+            <span
+              className="bg-coffeeBrown text-black italic py-1 px-2 rounded mr-2"
+              ref={posRef}
+            >
               {entry.fl}
             </span>
           )}
         </div>
         {entry.shortdef && entry.shortdef.length > 0 && (
-          <p>{entry.shortdef[0]}</p>
+          <p ref={definitionRef}>{entry.shortdef[0]}</p>
         )}
       </div>
     ));
@@ -130,12 +150,15 @@ export default function Dictionary() {
         </div>
         {dictionaryData && imageData && (
           <div className="max-w-md mx-auto bg-coffeeMate rounded-lg border-4 border-solid border-coffeeBrown shadow-coffeeDark shadow-sm p-4">
-            <h1 className="text-3xl text-coffeeDark font-bold italic mb-4">
+            <h1
+              className="text-3xl text-coffeeDark font-bold italic mb-4"
+              ref={wordRef}
+            >
               {searchTermHeading}
-            </h1>{" "}
-            {/* Use the fixed search term heading */}
+            </h1>
             <div className="mb-4">
               <img
+                ref={imgURLRef}
                 src={imageData}
                 alt={searchTerm}
                 className="w-full rounded object-cover border-2 border-coffeeDark"
