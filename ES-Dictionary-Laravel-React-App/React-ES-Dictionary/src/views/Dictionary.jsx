@@ -19,6 +19,8 @@ export default function Dictionary() {
     setSearchTerm("");
     const payload = await createPayload();
     console.log(payload);
+    axiosClient.get("/").then().catch();
+
     axiosClient
       .post("/store", payload)
       .then(({ data }) => {
