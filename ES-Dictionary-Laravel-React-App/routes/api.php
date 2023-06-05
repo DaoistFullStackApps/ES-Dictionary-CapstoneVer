@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\WordController;
 use App\Http\Controllers\DictionaryController;
 
 use Illuminate\Http\Request;
@@ -20,9 +21,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::post('/store', [WordController::class, 'store']);
+
 
 Route::get('/words', [DictionaryController::class, 'index']);
-Route::post('/words', [DictionaryController::class, 'store']);
+
 Route::get('/words/{word}', [DictionaryController::class, 'show']);
 Route::put('/words/{id}', [DictionaryController::class, 'update']);
 Route::delete('/words/{id}', [DictionaryController::class, 'destroy']);

@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import axiosClient from "../axios-client.js";
 
 export default function Dictionary() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -18,6 +19,17 @@ export default function Dictionary() {
     setSearchTerm("");
     const payload = await createPayload();
     console.log(payload);
+    axiosClient
+      .post("/store", payload)
+      .then(({ data }) => {
+        console.log(`you have searched the word ${data.word}!`)
+      })
+      .catch((err) => {
+        const response = err.reseponse;
+        if (response && response.status === 422) {
+          console.log(response.data.errors);
+        }
+      });
   };
 
   const handleKeyPress = (e) => {
@@ -35,7 +47,7 @@ export default function Dictionary() {
         ? definitionRef.current.textContent
         : "",
       part_of_speech: posRef.current ? posRef.current.textContent : "",
-      img_url: imgURLRef.current ? imgURLRef.current.src : "",
+      image_url: imgURLRef.current ? imgURLRef.current.src : "",
     };
   };
 
