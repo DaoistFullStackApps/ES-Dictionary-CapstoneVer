@@ -33,7 +33,6 @@ export default function Dictionary() {
           image_url,
           part_of_speech,
         });
-        setImageData(image_url);
 
         console.log(`word is : ${searchWord}`);
         console.log(`image_url is: ${image_url}`);

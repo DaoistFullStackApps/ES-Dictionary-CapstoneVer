@@ -38,7 +38,7 @@ class WordController extends Controller
             return response()->json([
                 'exists' => true,
                 'word' => $wordExists,
-                'message' => 'The word ' .  $word . ' was found in the database!'
+                // 'message' => 'The word ' .  $word . ' was found in the database!'
             ]);
         } else {
             // Word doesn't exist, return a response indicating that
