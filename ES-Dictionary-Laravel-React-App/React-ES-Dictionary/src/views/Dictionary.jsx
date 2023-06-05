@@ -24,24 +24,25 @@ export default function Dictionary() {
       if (data.exists) {
         console.log(response);
         const { exists, word } = data;
-        const { id, word: searchWord, image_url, part_of_speech } = word;
-
-        // Update the state with the fetched data
-        setDictionaryData({
-          id,
-          word: searchWord,
-          image_url,
-          part_of_speech,
-        });
+        const { id, word: searchWord, image_url, part_of_speech, definition } = word;
+      
+        const dictionaryData = {
+          hwi: { hw: [searchWord] },
+          fl: [part_of_speech],
+          shortdef: [definition],
+        };
+        
+        setDictionaryData(dictionaryData);
         setImageData(image_url);
-
+      
         console.log(`word is : ${searchWord}`);
-        console.log(`image_url is: ${image_url}`);
+        console.log(`definition is : ${definition}`);
         console.log(`part_of_speech is : ${part_of_speech}`);
-
+      
         // console.log(`You have searched the word ${data.word.word}!`);
         return;
       }
+      
 
       await Promise.all([fetchImage(), fetchDictionary()]);
 
