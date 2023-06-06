@@ -19,11 +19,18 @@ export default function Dictionary() {
       if (data.exists) {
         const {
           exists,
-          word: { id, word: searchWord, image_url, part_of_speech, definition },
+          word: {
+            id,
+            word: searchWord,
+            image_url,
+            part_of_speech,
+            definition,
+            pronunciation,
+          },
         } = data;
 
         setDictionaryData({
-          hwi: { hw: [searchWord] },
+          hwi: { hw: [pronunciation] },
           fl: [part_of_speech],
           shortdef: [definition],
         });
@@ -40,15 +47,17 @@ export default function Dictionary() {
 
       // await Promise.all([fetchImage(), fetchDictionary()]);
 
-     
-      fetchImage();
-      fetchDictionary();
-     
+      const payload = await fetchData();
 
-      const payload = createPayload(imageData, dictionaryData);
-      console.log(imageData);
-      console.log(dictionaryData);
-      console.log(payload);
+      if (payload) {
+        setDictionaryData({
+          hwi: { hw: [payload.pronunciation] },
+          fl: [payload.part_of_speech],
+          shortdef: [payload.definition],
+        });
+        
+        setImageData(payload.image_url);
+      }
 
       axiosClient
         .post("/store", payload)
@@ -77,57 +86,66 @@ export default function Dictionary() {
     setSearchTerm("");
   };
 
-  const createPayload =  (imageData, dictionaryData) => {
+  const fetchData = async () => {
+    const UnsplashKey = "Fj2N2fNmwFAPuSC_agE73Mfy0Sv9bqtXS3XhGEcCWSY";
+    const UnsplashUrl = `https://api.unsplash.com/photos/random?query=${searchTerm}&client_id=${UnsplashKey}`;
+
+    const MerriamWebKey = "98a198a3-a200-490a-ad48-98ac95b46d80";
+    const MerriamWebUrl = `https://dictionaryapi.com/api/v3/references/collegiate/json/${searchTerm}?key=${MerriamWebKey}`;
+
+    try {
+      const [imageResponse, dictionaryResponse] = await Promise.all([
+        fetch(UnsplashUrl),
+        fetch(MerriamWebUrl),
+      ]);
+
+      const imageData = await imageResponse.json();
+      const dictionaryData = await dictionaryResponse.json();
+
+      // Filter the JSON data to include only the relevant entries
+      const filteredData = dictionaryData.filter(
+        (entry) => entry.shortdef && entry.shortdef.length > 0
+      );
+
+      const dictionaryDataToSet =
+        filteredData.length > 0 ? filteredData[0] : null;
+
+      // Create the payload using the response data
+      const payload = createPayload(
+        imageData.urls.small,
+        dictionaryDataToSet
+      );
+      console.log(payload);
+
+      return payload;
+    } catch (error) {
+      console.log("Error fetching data:", error);
+      return null;
+    }
+  };
+
+  const createPayload = async (imageData, dictionaryData, searchTerm) => {
     if (!dictionaryData) {
       return null; // Return null or handle the absence of data in a desired way
     }
-
+  
     const { hwi, fl, shortdef } = dictionaryData;
-
-    const word = hwi?.hw || "";
+  
+    const pronunciation = hwi?.hw || "";
     const part_of_speech = fl || "";
     const definition = shortdef?.[0] || "";
     const image_url = imageData;
-
+    const word = searchTerm;
+  
     return {
       word,
+      pronunciation,
       definition,
       part_of_speech,
       image_url,
     };
   };
-
-  const fetchImage = async () => {
-    const UnsplashKey = "Fj2N2fNmwFAPuSC_agE73Mfy0Sv9bqtXS3XhGEcCWSY";
-    const UnsplashUrl = `https://api.unsplash.com/photos/random?query=${searchTerm}&client_id=${UnsplashKey}`;
-
-    try {
-      const response = await fetch(UnsplashUrl);
-      const data = await response.json();
-      setImageData(data.urls.regular);
-    } catch (error) {
-      console.log("Error fetching image:", error);
-    }
-  };
-
-  const fetchDictionary = async () => {
-    const MerriamWebKey = "98a198a3-a200-490a-ad48-98ac95b46d80";
-    const MerriamWebUrl = `https://dictionaryapi.com/api/v3/references/collegiate/json/${searchTerm}?key=${MerriamWebKey}`;
-
-    try {
-      const response = await fetch(MerriamWebUrl);
-      const data = await response.json();
-
-      // Filter the JSON data to include only the relevant entries
-      const filteredData = data.filter(
-        (entry) => entry.shortdef && entry.shortdef.length > 0
-      );
-
-      setDictionaryData(filteredData.length > 0 ? filteredData[0] : null);
-    } catch (error) {
-      console.log("Error fetching dictionary data:", error);
-    }
-  };
+  
 
   const renderDefinitions = () => {
     if (!dictionaryData) return null;

@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('words', function (Blueprint $table) {
             $table->id();
             $table->string('word')->unique();
+            $table->string('pronunciation');
             $table->text('definition');
             $table->string('part_of_speech');
             $table->string('image_url')->nullable();

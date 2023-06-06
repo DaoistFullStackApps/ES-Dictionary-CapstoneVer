@@ -12,6 +12,7 @@ class Word extends Model
     protected $fillable = [
         'word',
         'definition',
+        'pronunciation',
         'part_of_speech',
         'image_url',
     ];
