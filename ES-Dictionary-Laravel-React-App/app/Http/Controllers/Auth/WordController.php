@@ -17,7 +17,7 @@ class WordController extends Controller
         $word = Word::create([
             'word' => $data['word'],
             'definition' => $data['definition'],
-            'pronunciation' => $data['pronounciation'],
+            'pronunciation' => $data['pronunciation'],
             'part_of_speech' => $data['part_of_speech'],
             'image_url' => $data['image_url'],
         ]);

@@ -46,7 +46,7 @@ export default function Dictionary() {
       // await fetchDictionary();
 
       // await Promise.all([fetchImage(), fetchDictionary()]);
-
+      
       const payload = await fetchData();
 
       if (payload) {
@@ -58,7 +58,7 @@ export default function Dictionary() {
         
         setImageData(payload.image_url);
       }
-
+      console.log(searchTerm)
       axiosClient
         .post("/store", payload)
         .then(({ word }) => {
@@ -113,7 +113,8 @@ export default function Dictionary() {
       // Create the payload using the response data
       const payload = createPayload(
         imageData.urls.small,
-        dictionaryDataToSet
+        dictionaryDataToSet,
+        searchTerm
       );
       console.log(payload);
 
@@ -200,8 +201,8 @@ export default function Dictionary() {
                 alt={searchTerm}
                 className="w-full rounded object-cover border-2 border-coffeeDark"
                 style={{
-                  maxHeight: "200px",
-                  minHeight: "200px",
+                  maxHeight: "250px",
+                  minHeight: "250px",
                 }}
               />
             </div>
