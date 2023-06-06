@@ -50,16 +50,16 @@ export default function Hero() {
       const definitionData = await definitionResponse.json();
       setDefinitionData(definitionData);
 
-      const imageResponse = await fetch(
-        `${UNSPLASH_API_URL}?query=${word}&client_id=${UNSPLASH_ACCESS_KEY}`
-      );
+      // const imageResponse = await fetch(
+      //   `${UNSPLASH_API_URL}?query=${word}&client_id=${UNSPLASH_ACCESS_KEY}`
+      // );
 
-      if (!imageResponse.ok) {
-        throw new Error("Failed to fetch image data");
-      }
+      // if (!imageResponse.ok) {
+      //   throw new Error("Failed to fetch image data");
+      // }
 
-      const imageData = await imageResponse.json();
-      setImageData(imageData.urls.regular);
+      // const imageData = await imageResponse.json();
+      // setImageData(imageData.urls.regular);
     } catch (error) {
       console.error("Error:", error);
     }
@@ -84,9 +84,11 @@ export default function Hero() {
           <span className="bg-coffeeBrown text-black font-semibold py-1 px-2 rounded mr-2">
             {entry.hwi && entry.hwi.hw}
           </span>
-          <span className="bg-coffeeBrown text-black italic py-1 px-2 rounded mr-2">
-            {entry.fl}
-          </span>
+          {entry.fl && (
+            <span className="bg-coffeeBrown text-black italic py-1 px-2 rounded mr-2">
+              {entry.fl}
+            </span>
+          )}
         </div>
         {entry.shortdef && entry.shortdef.length > 0 && (
           <p>{entry.shortdef[0]}</p>
@@ -111,7 +113,7 @@ export default function Hero() {
           disabled={currentPage === 1}
           onClick={() => handlePageChange(currentPage - 1)}
         >
-          Prev
+          prev
         </button>
         <span className="px-3 font-semibold underline text-coffeeDark">
           {currentPage}
@@ -125,7 +127,7 @@ export default function Hero() {
           disabled={currentPage === totalPages}
           onClick={() => handlePageChange(currentPage + 1)}
         >
-          Next
+          more
         </button>
       </div>
     );
@@ -159,7 +161,7 @@ export default function Hero() {
               <h1 className="text-3xl text-coffeeDark font-bold italic mb-4">
                 {randomWord}
               </h1>
-              <div className="mb-4">
+              {/* <div className="mb-4">
                 {imageData && (
                   <img
                     src={imageData}
@@ -168,7 +170,7 @@ export default function Hero() {
                     style={{ maxHeight: "200px", minHeight: "200px" }}
                   />
                 )}
-              </div>
+              </div> */}
               <div
                 className="flex flex-col"
                 style={{ maxHeight: "140px", minHeight: "140px" }}

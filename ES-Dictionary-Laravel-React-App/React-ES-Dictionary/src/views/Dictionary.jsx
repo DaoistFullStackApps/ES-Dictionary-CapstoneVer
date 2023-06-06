@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import axiosClient from "../axios-client.js";
 
 export default function Dictionary() {
@@ -6,14 +6,9 @@ export default function Dictionary() {
   const [searchTermHeading, setSearchTermHeading] = useState("");
   const [dictionaryData, setDictionaryData] = useState(null);
   const [imageData, setImageData] = useState(null);
-  const wordRef = useRef(null);
-  const definitionRef = useRef(null);
-  const posRef = useRef(null);
-  const imgURLRef = useRef(null);
 
   const handleSearch = async () => {
-    setSearchTermHeading(searchTerm);
-    setSearchTerm("");
+    clearSearchTerm();
 
     try {
       const { data } = await axiosClient.post("/check", {
@@ -22,31 +17,37 @@ export default function Dictionary() {
       const response = { data };
 
       if (data.exists) {
-        console.log(response);
-        const { exists, word } = data;
-        const { id, word: searchWord, image_url, part_of_speech, definition } = word;
-      
-        const dictionaryData = {
+        const {
+          exists,
+          word: { id, word: searchWord, image_url, part_of_speech, definition },
+        } = data;
+
+        setDictionaryData({
           hwi: { hw: [searchWord] },
           fl: [part_of_speech],
           shortdef: [definition],
-        };
-        
-        setDictionaryData(dictionaryData);
+        });
+
         setImageData(image_url);
-      
-        console.log(`word is : ${searchWord}`);
-        console.log(`definition is : ${definition}`);
-        console.log(`part_of_speech is : ${part_of_speech}`);
-      
-        // console.log(`You have searched the word ${data.word.word}!`);
         return;
       }
-      
 
-      await Promise.all([fetchImage(), fetchDictionary()]);
+      // // Fetch the image data
+      // await fetchImage();
 
-      const payload = await createPayload();
+      // // Fetch the dictionary data
+      // await fetchDictionary();
+
+      // await Promise.all([fetchImage(), fetchDictionary()]);
+
+     
+      fetchImage();
+      fetchDictionary();
+     
+
+      const payload = createPayload(imageData, dictionaryData);
+      console.log(imageData);
+      console.log(dictionaryData);
       console.log(payload);
 
       axiosClient
@@ -65,24 +66,34 @@ export default function Dictionary() {
     }
   };
 
-  const decompiler = () => {};
-
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       handleSearch();
     }
   };
 
-  const createPayload = async () => {
-    await Promise.all([fetchImage(), fetchDictionary()]);
+  const clearSearchTerm = () => {
+    setSearchTermHeading(searchTerm);
+    setSearchTerm("");
+  };
+
+  const createPayload =  (imageData, dictionaryData) => {
+    if (!dictionaryData) {
+      return null; // Return null or handle the absence of data in a desired way
+    }
+
+    const { hwi, fl, shortdef } = dictionaryData;
+
+    const word = hwi?.hw || "";
+    const part_of_speech = fl || "";
+    const definition = shortdef?.[0] || "";
+    const image_url = imageData;
 
     return {
-      word: wordRef.current.textContent,
-      definition: definitionRef.current
-        ? definitionRef.current.textContent
-        : "",
-      part_of_speech: posRef.current ? posRef.current.textContent : "",
-      image_url: imgURLRef.current ? imgURLRef.current.src : "",
+      word,
+      definition,
+      part_of_speech,
+      image_url,
     };
   };
 
@@ -130,17 +141,12 @@ export default function Dictionary() {
             {hwi && hwi.hw}
           </span>
           {fl && (
-            <span
-              className="bg-coffeeBrown text-black italic py-1 px-2 rounded mr-2"
-              ref={posRef}
-            >
+            <span className="bg-coffeeBrown text-black italic py-1 px-2 rounded mr-2">
               {fl}
             </span>
           )}
         </div>
-        {shortdef && shortdef.length > 0 && (
-          <p ref={definitionRef}>{shortdef[0]}</p>
-        )}
+        {shortdef && shortdef.length > 0 && <p>{shortdef[0]}</p>}
       </div>
     );
   };
@@ -167,15 +173,11 @@ export default function Dictionary() {
         </div>
         {dictionaryData && imageData && (
           <div className="max-w-md mx-auto bg-coffeeMate rounded-lg border-4 border-solid border-coffeeBrown shadow-coffeeDark shadow-sm p-4">
-            <h1
-              className="text-3xl text-coffeeDark font-bold italic mb-4"
-              ref={wordRef}
-            >
+            <h1 className="text-3xl text-coffeeDark font-bold italic mb-4">
               {searchTermHeading}
             </h1>
             <div className="mb-4">
               <img
-                ref={imgURLRef}
                 src={imageData}
                 alt={searchTerm}
                 className="w-full rounded object-cover border-2 border-coffeeDark"
