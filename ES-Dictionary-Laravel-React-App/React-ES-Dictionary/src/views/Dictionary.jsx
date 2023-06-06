@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axiosClient from "../axios-client.js";
+import Draggable from 'react-draggable';
 
 export default function Dictionary() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -172,6 +173,7 @@ export default function Dictionary() {
 
   return (
     <div className="bg-coffee flex min-h-screen justify-center items-center">
+      
       <div className="w-2/4 mx-auto min-w-full" id="dictionary_content">
         <div className="max-w-md mx-auto mb-4 flex justify-evenly space-x-4">
           <input
@@ -190,7 +192,9 @@ export default function Dictionary() {
             Search
           </button>
         </div>
+        
         {dictionaryData && imageData && (
+          <Draggable>
           <div className="max-w-md mx-auto bg-coffeeMate rounded-lg border-4 border-solid border-coffeeBrown shadow-coffeeDark shadow-sm p-4">
             <h1 className="text-3xl text-coffeeDark font-bold italic mb-4">
               {searchTermHeading}
@@ -215,7 +219,9 @@ export default function Dictionary() {
               </div>
             </div>
           </div>
+          </Draggable>
         )}
+        
       </div>
     </div>
   );

@@ -3,6 +3,7 @@ import {BookOpenIcon} from "@heroicons/react/24/outline";
 import { Link, Outlet } from "react-router-dom";
 import "../views/Css/Mobile.Css"
 
+
 export default function DefaultLayout() {
   return (
     <div className="min-h-screen">
