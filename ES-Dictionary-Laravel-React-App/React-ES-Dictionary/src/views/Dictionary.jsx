@@ -128,7 +128,7 @@ export default function Dictionary() {
           searchTerm
         );
       } else {
-        console.log("FetchData 404 Error: ", searchTerm, "IS NOT FOUND");
+        console.log(`FetchData 404 Error: ${searchTerm} IS NOT FOUND`);
       }
 
       return payload;
@@ -149,7 +149,7 @@ export default function Dictionary() {
     const part_of_speech = fl || "";
     const definition = shortdef?.[0] || "";
     const image_url = imageData;
-    const word = searchTerm;
+    const word = searchTerm.toLowerCase();
 
     return {
       word,
