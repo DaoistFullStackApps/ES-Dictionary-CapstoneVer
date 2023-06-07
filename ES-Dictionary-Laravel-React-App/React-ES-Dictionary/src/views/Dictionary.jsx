@@ -1,8 +1,46 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import axiosClient from "../axios-client.js";
 import { debounce } from "lodash";
+import Draggable from 'react-draggable';
+import domtoimage from 'dom-to-image';
+import jsPDF from 'jspdf';
+import {ArrowDownTrayIcon} from "@heroicons/react/24/outline";
+import {PencilSquareIcon} from "@heroicons/react/24/outline";
+import {NewspaperIcon} from "@heroicons/react/24/outline";
+
 
 export default function Dictionary() {
+  // Popup Features
+  const [showMessage, setShowMessage] = useState(false);
+
+  const toggleMessage = () => {
+    setShowMessage(!showMessage);
+  };
+
+
+  // Download Starts
+  const divRef = useRef(null);
+
+  const handleDownload = async () => {
+    const element = divRef.current;
+
+    const dataUrl = await domtoimage.toPng(element);
+
+    const pdf = new jsPDF('p', 'mm', 'a4');
+
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = pdf.internal.pageSize.getHeight();
+
+    const imageWidth = pdfWidth * 0.8; 
+    const imageHeight = (imageWidth * element.offsetHeight) / element.offsetWidth;
+
+    const xPos = (pdfWidth - imageWidth) / 2;
+    const yPos = (pdfHeight - imageHeight) / 2;
+
+    pdf.addImage(dataUrl, 'PNG', xPos, yPos, imageWidth, imageHeight);
+    pdf.save('dictionary.pdf');
+  };
+// Download Ends
   const [searchTerm, setSearchTerm] = useState("");
   const [searchTermHeading, setSearchTermHeading] = useState("");
   const [dictionaryData, setDictionaryData] = useState(null);
@@ -211,7 +249,8 @@ export default function Dictionary() {
   };
 
   return (
-    <div className="bg-coffee flex min-h-screen justify-center items-center">
+    <div>
+    <div className={`bg-coffee flex min-h-screen justify-center items-center ${showMessage ? "blur" : ""}`}>
       <div className="w-2/4 mx-auto min-w-full">
         <div className="max-w-md mx-auto mb-4 flex justify-evenly space-x-4">
           <input
@@ -236,8 +275,13 @@ export default function Dictionary() {
             {isLoading ? "Loading..." : "Search"}
           </button>
         </div>
+        <div>
+
         {dictionaryData && imageData && (
-          <div className="max-w-md mx-auto bg-coffeeMate rounded-lg border-4 border-solid border-coffeeBrown shadow-coffeeDark shadow-sm p-4">
+          
+          <Draggable>
+           <div className="max-w-md mx-auto bg-coffeeMate rounded-lg border-4 border-solid border-coffeeBrown shadow-coffeeDark shadow-sm p-4">
+           <div ref={divRef}>
             <h1 className="text-3xl text-coffeeDark font-bold italic mb-4">
               {searchTermHeading.toLowerCase()}
             </h1>
@@ -259,10 +303,26 @@ export default function Dictionary() {
               <div className="flex-1 overflow-y-auto">
                 {renderDefinitions()}
               </div>
+            </div>     
             </div>
+                <ArrowDownTrayIcon className="absolute bottom-5 right-5 bg-coffeeBrown text-white text-base  italic py-1 px-1 rounded shadow-sm shadow-coffeeDark hover:bg-coffeeDark focus:ring-coffeeDark h-5" onClick={handleDownload}/>
+                <PencilSquareIcon className="absolute bottom-5 right-12 bg-coffeeBrown text-white text-base  italic py-1 px-1 rounded shadow-sm shadow-coffeeDark hover:bg-coffeeDark focus:ring-coffeeDark h-5" onClick={toggleMessage} />
+                <NewspaperIcon className="absolute bottom-5 right-20  bg-coffeeBrown text-white text-base  italic py-1 px-1 rounded shadow-sm shadow-coffeeDark hover:bg-coffeeDark focus:ring-coffeeDark h-5" onClick={toggleMessage} />
           </div>
+          </Draggable>
         )}
       </div>
+      </div>
+    </div>
+    {showMessage && (
+        <div className="popup_message">
+          <p>
+            In order to access the features, you need to{" "}
+            <span>sign up</span>.
+          </p>
+          <button className="bg-coffeeBrown text-white text-base font-semibold italic py-2 px-4 rounded shadow-sm shadow-coffeeDark hover:bg-coffeeDark focus:ring-coffeeDark w-24 " onClick={toggleMessage}>Cancel</button>
+        </div>
+      )}
     </div>
   );
 }
