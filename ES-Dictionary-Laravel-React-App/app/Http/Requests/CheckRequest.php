@@ -28,10 +28,10 @@ class CheckRequest extends FormRequest
     public function messages()
     {
         return [
-            'word.required' => 'Please enter a word',
-            'word.string' => 'Please enter a valid input',
-            'word.max' => 'Please enter a valid input',
-            'word.regex' => 'Please enter a valid input',
+            'word.required' => 'Please enter a word!',
+            'word.string' => 'Please enter a valid word!',
+            'word.max' => 'Please dont enter a sentence!',
+            'word.regex' => 'Please enter a valid word!',
         ];
     }
 
