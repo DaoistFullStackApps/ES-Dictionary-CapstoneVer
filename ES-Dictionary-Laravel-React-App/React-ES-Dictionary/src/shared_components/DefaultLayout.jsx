@@ -1,6 +1,7 @@
 import React from "react";
 import {BookOpenIcon} from "@heroicons/react/24/outline";
 import { Link, Outlet } from "react-router-dom";
+import '../views/css/style.css'
 
 export default function DefaultLayout() {
   return (
