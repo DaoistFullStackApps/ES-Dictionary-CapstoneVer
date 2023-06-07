@@ -1,19 +1,23 @@
 import React, { useState } from "react";
 import axiosClient from "../axios-client.js";
 import Draggable from 'react-draggable';
+import { debounce } from "lodash";
 
 export default function Dictionary() {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchTermHeading, setSearchTermHeading] = useState("");
   const [dictionaryData, setDictionaryData] = useState(null);
+  const [searchPlaceholder, setSearchPlaceholder] = useState("Enter a word");
   const [imageData, setImageData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSearch = async () => {
+    console.log("handleSearch initiated");
     clearSearchTerm();
 
     try {
       const { data } = await axiosClient.post("/check", {
-        word: searchTerm,
+        word: searchTerm.toLowerCase(),
       });
       const response = { data };
 
@@ -37,29 +41,32 @@ export default function Dictionary() {
         });
 
         setImageData(image_url);
+        setSearchPlaceholder("Enter a word");
+        setIsLoading(false);
         return;
       }
 
-      // // Fetch the image data
-      // await fetchImage();
-
-      // // Fetch the dictionary data
-      // await fetchDictionary();
-
-      // await Promise.all([fetchImage(), fetchDictionary()]);
-      
       const payload = await fetchData();
-
-      if (payload) {
+      // console.log(payload);
+      if (!payload) {
+        // console.log("POST store halted as fetchData encountered an ERROR");
+        const errorMessage = `The word ${searchTerm} was invalid!`;
+        setSearchPlaceholder(errorMessage);
+        setDictionaryData("");
+        setImageData("");
+        setIsLoading(false);
+        return; // Return if there is no payload detected
+      } else {
         setDictionaryData({
           hwi: { hw: [payload.pronunciation] },
           fl: [payload.part_of_speech],
           shortdef: [payload.definition],
         });
-        
+
         setImageData(payload.image_url);
+        setSearchPlaceholder("Enter a word");
       }
-      console.log(searchTerm)
+
       axiosClient
         .post("/store", payload)
         .then(({ word }) => {
@@ -67,24 +74,23 @@ export default function Dictionary() {
         })
         .catch((err) => {
           const response = err.response;
-          if (response && response.status === 422) {
-            console.log(response.data.errors);
+          if (response && response.status === 404) {
+            console.log("AxiosPOST Error:", response.data.errors);
           }
         });
     } catch (error) {
-      console.log("Error checking word:", error);
-    }
-  };
+      if (error.response && error.response.status === 422) {
+        const errorMessage = error.response.data.message;
 
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-      handleSearch();
+        console.log("Validation Error:", errorMessage);
+        setSearchPlaceholder(errorMessage);
+        setDictionaryData("");
+        setImageData("");
+      } else {
+        console.log("Error checking word:", error);
+      }
     }
-  };
-
-  const clearSearchTerm = () => {
-    setSearchTermHeading(searchTerm);
-    setSearchTerm("");
+    setIsLoading(false);
   };
 
   const fetchData = async () => {
@@ -101,6 +107,8 @@ export default function Dictionary() {
       ]);
 
       const imageData = await imageResponse.json();
+      // console.log("imageData:", imageData);
+
       const dictionaryData = await dictionaryResponse.json();
 
       // Filter the JSON data to include only the relevant entries
@@ -112,12 +120,17 @@ export default function Dictionary() {
         filteredData.length > 0 ? filteredData[0] : null;
 
       // Create the payload using the response data
-      const payload = createPayload(
-        imageData.urls.small,
-        dictionaryDataToSet,
-        searchTerm
-      );
-      console.log(payload);
+      let payload = null;
+
+      if (imageData && imageData.urls && imageData.urls.small) {
+        payload = createPayload(
+          imageData.urls.small,
+          dictionaryDataToSet,
+          searchTerm
+        );
+      } else {
+        console.log("FetchData 404 Error: ",searchTerm, "IS NOT FOUND");
+      }
 
       return payload;
     } catch (error) {
@@ -130,15 +143,15 @@ export default function Dictionary() {
     if (!dictionaryData) {
       return null; // Return null or handle the absence of data in a desired way
     }
-  
+
     const { hwi, fl, shortdef } = dictionaryData;
-  
+
     const pronunciation = hwi?.hw || "";
     const part_of_speech = fl || "";
     const definition = shortdef?.[0] || "";
     const image_url = imageData;
     const word = searchTerm;
-  
+
     return {
       word,
       pronunciation,
@@ -147,7 +160,22 @@ export default function Dictionary() {
       image_url,
     };
   };
-  
+
+  const debouncedSearch = debounce(async () => {
+    setIsLoading(true);
+    await handleSearch();
+  }, 500);
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      debouncedSearch();
+    }
+  };
+
+  const clearSearchTerm = () => {
+    setSearchTermHeading(searchTerm);
+    setSearchTerm("");
+  };
 
   const renderDefinitions = () => {
     if (!dictionaryData) return null;
@@ -180,16 +208,24 @@ export default function Dictionary() {
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Enter a word"
-            className="w-3/4 px-4 py-2 font-semibold border-2 border-coffeeBrown rounded-md  focus:outline-double focus:ring-coffeeDark focus:border-coffeeDark"
+            placeholder={isLoading ? "Loading..." : searchPlaceholder}
+            className={`w-3/4 px-4 py-2 font-semibold border-2 border-coffeeBrown rounded-md focus:outline-double focus:ring-coffeeDark focus:border-coffeeDark ${
+              isLoading
+                ? "ring-coffeeDark border-coffeeDark transition ease-in-out duration-300"
+                : ""
+            }`}
             onKeyDown={handleKeyPress}
+            disabled={isLoading}
           />
 
           <button
-            onClick={handleSearch}
-            className="bg-coffeeBrown text-white text-lg font-semibold italic py-2 px-4 rounded shadow-sm shadow-coffeeDark hover:bg-coffeeDark  focus:ring-coffeeDark"
+            onClick={debouncedSearch}
+            disabled={isLoading}
+            className={`bg-coffeeBrown text-white text-base font-semibold italic py-2 px-4 rounded shadow-sm shadow-coffeeDark hover:bg-coffeeDark focus:ring-coffeeDark w-24 ${
+              isLoading ? "w-24 bg-coffeeDark" : ""
+            }`}
           >
-            Search
+            {isLoading ? "Loading..." : "Search"}
           </button>
         </div>
         
@@ -203,7 +239,7 @@ export default function Dictionary() {
               <img
                 src={imageData}
                 alt={searchTerm}
-                className="w-full rounded object-cover border-2 border-coffeeDark"
+                className="w-full rounded object-cover border-2 border-coffeeDark transition-opacity duration-500"
                 style={{
                   maxHeight: "250px",
                   minHeight: "250px",
@@ -211,7 +247,7 @@ export default function Dictionary() {
               />
             </div>
             <div
-              className="flex flex-col"
+              className="flex flex-col transition-opacity duration-500"
               style={{ maxHeight: "140px", minHeight: "140px" }}
             >
               <div className="flex-1 overflow-y-auto">

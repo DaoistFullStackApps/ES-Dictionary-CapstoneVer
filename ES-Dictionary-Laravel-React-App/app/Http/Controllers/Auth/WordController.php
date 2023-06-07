@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CheckRequest;
 use App\Http\Requests\StoreRequest;
 use App\Http\Requests\UpdateRequest;
 use App\Models\Word;
@@ -27,29 +28,54 @@ class WordController extends Controller
         ]);
     }
 
-    public function check(Request $request)
+    public function check(CheckRequest $request)
     {
-        $word = $request->input('word');
+        // Validates the request
+        $validatedData = $request->validated();
+
+        $word = $validatedData['word'];
 
         // Check if the word exists in the database
         $wordExists = Word::where('word', $word)->first();
 
+        $response = [
+            'word' => $word,
+            'exists' => $wordExists ? true : false,
+            'message' => null,
+        ];
+
         if ($wordExists) {
-            // Word exists, return the word data
-            return response()->json([
-                'exists' => true,
-                'word' => $wordExists,
-                // 'message' => 'The word ' .  $word . ' was found in the database!'
-            ]);
+            $response['word'] = $wordExists;
+            $response['message'] = $wordExists->word . ' was found in the database!';
         } else {
-            // Word doesn't exist, return a response indicating that
-            return response()->json([
-                'exists' => false,
-                'message' => 'The word ' .  $word . ' was  not found in the database!'
-            ]);
+            $response['message'] = $word . ' was not found in the database!';
         }
+
+        return response()->json($response);
     }
 
+    // public function check(CheckRequest $request)
+    // {   
+    //     // Validates the request
+    //     $validatedData = $request->validated();
+    //     $word = $validatedData['word'];
 
+    //     // Check if the word exists in the database
+    //     $wordExists = Word::where('word', $word)->first();
 
+    //     if ($wordExists) {
+    //         // Word exists, return the word data
+    //         return response()->json([
+    //             'exists' => true,
+    //             'word' => $wordExists,
+    //             // 'message' => 'The word ' .  $word . ' was found in the database!'
+    //         ]);
+    //     } else {
+    //         // Word doesn't exist, return a response indicating that
+    //         return response()->json([
+    //             'exists' => false,
+    //             'message' => 'The word ' .  $word . ' was  not found in the database!'
+    //         ]);
+    //     }
+    // }
 }

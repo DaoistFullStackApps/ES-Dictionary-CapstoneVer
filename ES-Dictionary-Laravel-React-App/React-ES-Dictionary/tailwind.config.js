@@ -13,9 +13,18 @@ module.exports = {
         coffeeBrown: '#f09e63',
         coffeeDark: '#753b11',
       },
+      transitionProperty: {
+        'opacity': 'opacity', // Add 'opacity' to transition properties
+      },
+    },
+  },
+  variants: {
+    extend: {
+      opacity: ['responsive', 'hover', 'focus', 'group-hover'],
     },
   },
   plugins: [
     require('@tailwindcss/forms'),
   ],
 };
+

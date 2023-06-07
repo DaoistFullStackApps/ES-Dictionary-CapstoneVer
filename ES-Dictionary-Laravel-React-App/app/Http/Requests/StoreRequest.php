@@ -26,7 +26,7 @@ class StoreRequest extends FormRequest
         return [
             'word' => 'required|string|max:12|unique:words,word',
             'pronunciation' => 'required|string',
-            'definition' => 'required|string|max:400',
+            'definition' => 'required|string|max:550',
             'part_of_speech'=> 'required|string',
             'image_url' => 'required|url|unique:words,image_url',
         ];
