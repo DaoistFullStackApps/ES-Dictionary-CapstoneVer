@@ -93,11 +93,13 @@ export default function Dictionary() {
   };
 
   const fetchData = async () => {
+    const cleanedSearchTerm = searchTerm.toLowerCase();
+    
     const UnsplashKey = "Fj2N2fNmwFAPuSC_agE73Mfy0Sv9bqtXS3XhGEcCWSY";
-    const UnsplashUrl = `https://api.unsplash.com/photos/random?query=${searchTerm}&client_id=${UnsplashKey}`;
+    const UnsplashUrl = `https://api.unsplash.com/photos/random?query=${cleanedSearchTerm}&client_id=${UnsplashKey}`;
 
     const MerriamWebKey = "98a198a3-a200-490a-ad48-98ac95b46d80";
-    const MerriamWebUrl = `https://dictionaryapi.com/api/v3/references/collegiate/json/${searchTerm}?key=${MerriamWebKey}`;
+    const MerriamWebUrl = `https://dictionaryapi.com/api/v3/references/collegiate/json/${cleanedSearchTerm}?key=${MerriamWebKey}`;
 
     try {
       const [imageResponse, dictionaryResponse] = await Promise.all([
@@ -117,6 +119,15 @@ export default function Dictionary() {
 
       const dictionaryDataToSet =
         filteredData.length > 0 ? filteredData[0] : null;
+
+
+      //prototype
+      // Extract the id and remove non-letter characters
+      const id = dictionaryDataToSet?.meta?.id || '';
+      const cleanedKeyword = id.replace(/[^a-zA-Z]/g, '');
+
+      console.log('Cleaned Keyword:', cleanedKeyword);
+      console.log('search Keyword:', searchTerm);
 
       // Create the payload using the response data
       let payload = null;
@@ -208,8 +219,8 @@ export default function Dictionary() {
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder={isLoading ? "Loading..." : searchPlaceholder}
             className={`w-3/4 px-4 py-2 font-semibold border-2 border-coffeeBrown rounded-md focus:outline-double focus:ring-coffeeDark focus:border-coffeeDark ${isLoading
-                ? "ring-coffeeDark border-coffeeDark transition ease-in-out duration-300"
-                : ""
+              ? "ring-coffeeDark border-coffeeDark transition ease-in-out duration-300"
+              : ""
               }`}
             onKeyDown={handleKeyPress}
             disabled={isLoading}
