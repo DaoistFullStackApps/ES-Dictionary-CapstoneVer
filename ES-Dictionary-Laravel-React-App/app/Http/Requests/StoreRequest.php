@@ -24,10 +24,10 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'word' => 'required|string|max:12|unique:words,word',
+            'word' => 'required|string|max:12|unique:words,word|regex:/^[a-z]+$/',
             'pronunciation' => 'required|string',
             'definition' => 'required|string|max:550',
-            'part_of_speech'=> 'required|string',
+            'part_of_speech' => 'required|string',
             'image_url' => 'required|url|unique:words,image_url',
         ];
     }
