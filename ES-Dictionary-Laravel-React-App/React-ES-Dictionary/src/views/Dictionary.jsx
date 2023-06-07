@@ -128,7 +128,7 @@ export default function Dictionary() {
           searchTerm
         );
       } else {
-        console.log("FetchData 404 Error: ",searchTerm, "IS NOT FOUND");
+        console.log("FetchData 404 Error: ", searchTerm, "IS NOT FOUND");
       }
 
       return payload;
@@ -207,11 +207,10 @@ export default function Dictionary() {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder={isLoading ? "Loading..." : searchPlaceholder}
-            className={`w-3/4 px-4 py-2 font-semibold border-2 border-coffeeBrown rounded-md focus:outline-double focus:ring-coffeeDark focus:border-coffeeDark ${
-              isLoading
+            className={`w-3/4 px-4 py-2 font-semibold border-2 border-coffeeBrown rounded-md focus:outline-double focus:ring-coffeeDark focus:border-coffeeDark ${isLoading
                 ? "ring-coffeeDark border-coffeeDark transition ease-in-out duration-300"
                 : ""
-            }`}
+              }`}
             onKeyDown={handleKeyPress}
             disabled={isLoading}
           />
@@ -219,9 +218,8 @@ export default function Dictionary() {
           <button
             onClick={debouncedSearch}
             disabled={isLoading}
-            className={`bg-coffeeBrown text-white text-base font-semibold italic py-2 px-4 rounded shadow-sm shadow-coffeeDark hover:bg-coffeeDark focus:ring-coffeeDark w-24 ${
-              isLoading ? "w-24 bg-coffeeDark" : ""
-            }`}
+            className={`bg-coffeeBrown text-white text-base font-semibold italic py-2 px-4 rounded shadow-sm shadow-coffeeDark hover:bg-coffeeDark focus:ring-coffeeDark w-24 ${isLoading ? "w-24 bg-coffeeDark" : ""
+              }`}
           >
             {isLoading ? "Loading..." : "Search"}
           </button>
@@ -229,7 +227,7 @@ export default function Dictionary() {
         {dictionaryData && imageData && (
           <div className="max-w-md mx-auto bg-coffeeMate rounded-lg border-4 border-solid border-coffeeBrown shadow-coffeeDark shadow-sm p-4">
             <h1 className="text-3xl text-coffeeDark font-bold italic mb-4">
-              {searchTermHeading}
+              {searchTermHeading.toLowerCase()}
             </h1>
             <div className="mb-4">
               <img
