@@ -16,7 +16,7 @@ class WordController extends Controller
     {
         $data = $request->validated();
         $word = Word::create([
-            'word' => $data['word'],
+            'word' => strtolower($data['word']),
             'definition' => $data['definition'],
             'pronunciation' => $data['pronunciation'],
             'part_of_speech' => $data['part_of_speech'],
