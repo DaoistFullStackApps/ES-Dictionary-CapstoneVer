@@ -1,0 +1,59 @@
+
+@Media only screen and (min-width:601px){
+
+    #dictionary_content{
+        transition: 0.5s;
+      }
+  
+      #hero_content{
+        transition: 0.5s;
+      }
+}
+
+@Media only screen and (max-width:600px){
+
+    #dictionary_content{
+      margin-bottom: 15rem ;
+      transition: 0.5s;
+    }
+
+    #hero_content{
+       margin-bottom: 10rem;
+       transition: 0.5s;
+    }
+}
+
+@Media only screen and (min-width:551px){
+
+    #hero_content #hero_text h1{
+        transition: 0.5s;
+    }
+
+    #hero_content #hero_text h2{
+        transition: 0.5s;
+    }
+
+    #hero_content #hero_text a{
+        transition: .5s;
+    }
+}
+
+@Media only screen and (max-width:550px){
+
+    #hero_content #hero_text h1{
+        font-size: 250%;
+        transition: 0.5s;
+    }
+
+    #hero_content #hero_text h2{
+        font-size: 180%;
+        transition: 0.5s;
+    }
+
+    #hero_content #hero_text a{
+        font-size: 120%;
+        transition: .5s;
+    }
+
+
+}
