@@ -94,7 +94,7 @@ export default function Dictionary() {
 
   const fetchData = async () => {
     const cleanedSearchTerm = searchTerm.toLowerCase();
-    
+
     const UnsplashKey = "Fj2N2fNmwFAPuSC_agE73Mfy0Sv9bqtXS3XhGEcCWSY";
     const UnsplashUrl = `https://api.unsplash.com/photos/random?query=${cleanedSearchTerm}&client_id=${UnsplashKey}`;
 
@@ -126,13 +126,13 @@ export default function Dictionary() {
       const id = dictionaryDataToSet?.meta?.id || '';
       const cleanedKeyword = id.replace(/[^a-zA-Z]/g, '');
 
-      console.log('Cleaned Keyword:', cleanedKeyword);
-      console.log('search Keyword:', searchTerm);
+      console.log('cleanedKeyword:', cleanedKeyword);
+      console.log('searchedKeyword:', searchTerm);
 
       // Create the payload using the response data
       let payload = null;
 
-      if (imageData && imageData.urls && imageData.urls.small) {
+      if (imageData && imageData.urls && imageData.urls.small && cleanedKeyword === cleanedSearchTerm) {
         payload = createPayload(
           imageData.urls.small,
           dictionaryDataToSet,
@@ -141,6 +141,7 @@ export default function Dictionary() {
       } else {
         console.log(`FetchData 404 Error: ${searchTerm} IS NOT FOUND`);
       }
+
 
       return payload;
     } catch (error) {
