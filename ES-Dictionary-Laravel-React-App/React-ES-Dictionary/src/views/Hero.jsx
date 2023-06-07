@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import Draggable from 'react-draggable';
 
 const MERRIAM_API_KEY = "98a198a3-a200-490a-ad48-98ac95b46d80";
 const UNSPLASH_ACCESS_KEY = "";
@@ -157,6 +158,7 @@ export default function Hero() {
             Featured Word
           </h2>
           {definitionData.length > 0 ? (
+            <Draggable>
             <div className="max-w-md mx-auto bg-coffeeMate rounded-lg shadow-coffeeDark shadow-sm p-4 border-4 border-solid border-coffeeBrown">
               <h1 className="text-3xl text-coffeeDark font-bold italic mb-4">
                 {randomWord}
@@ -181,6 +183,7 @@ export default function Hero() {
                 <div className="mt-4">{renderPagination()}</div>
               </div>
             </div>
+            </Draggable>
           ) : (
             <div className="max-w-md mx-auto bg-coffeeMate rounded-lg border-4 border-solid border-coffeeBrown shadow-coffeeDark shadow-sm p-4">
               <h1 className="text-3xl font-bold m-auto flex justify-center">
