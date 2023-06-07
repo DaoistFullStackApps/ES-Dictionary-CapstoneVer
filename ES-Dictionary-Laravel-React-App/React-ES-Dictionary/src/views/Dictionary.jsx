@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axiosClient from "../axios-client.js";
-import debounce from "lodash/debounce.js";
+import { debounce } from "lodash";
 
 export default function Dictionary() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -16,7 +16,7 @@ export default function Dictionary() {
 
     try {
       const { data } = await axiosClient.post("/check", {
-        word: searchTerm,
+        word: searchTerm.toLowerCase(),
       });
       const response = { data };
 
@@ -46,8 +46,16 @@ export default function Dictionary() {
       }
 
       const payload = await fetchData();
-
-      if (payload) {
+      // console.log(payload);
+      if (!payload) {
+        // console.log("POST store halted as fetchData encountered an ERROR");
+        const errorMessage = `The word ${searchTerm} was invalid!`;
+        setSearchPlaceholder(errorMessage);
+        setDictionaryData("");
+        setImageData("");
+        setIsLoading(false);
+        return; // Return if there is no payload detected
+      } else {
         setDictionaryData({
           hwi: { hw: [payload.pronunciation] },
           fl: [payload.part_of_speech],
@@ -65,8 +73,8 @@ export default function Dictionary() {
         })
         .catch((err) => {
           const response = err.response;
-          if (response && response.status === 422) {
-            console.log(response.data.errors);
+          if (response && response.status === 404) {
+            console.log("AxiosPOST Error:", response.data.errors);
           }
         });
     } catch (error) {
@@ -84,23 +92,6 @@ export default function Dictionary() {
     setIsLoading(false);
   };
 
-  const debouncedSearch = debounce(async () => {
-    setIsLoading(true);
-    await handleSearch();
-  }, 500);
-
-
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-      debouncedSearch();
-    }
-  };
-
-  const clearSearchTerm = () => {
-    setSearchTermHeading(searchTerm);
-    setSearchTerm("");
-  };
-
   const fetchData = async () => {
     const UnsplashKey = "Fj2N2fNmwFAPuSC_agE73Mfy0Sv9bqtXS3XhGEcCWSY";
     const UnsplashUrl = `https://api.unsplash.com/photos/random?query=${searchTerm}&client_id=${UnsplashKey}`;
@@ -115,6 +106,8 @@ export default function Dictionary() {
       ]);
 
       const imageData = await imageResponse.json();
+      // console.log("imageData:", imageData);
+
       const dictionaryData = await dictionaryResponse.json();
 
       // Filter the JSON data to include only the relevant entries
@@ -126,11 +119,17 @@ export default function Dictionary() {
         filteredData.length > 0 ? filteredData[0] : null;
 
       // Create the payload using the response data
-      const payload = createPayload(
-        imageData.urls.small,
-        dictionaryDataToSet,
-        searchTerm
-      );
+      let payload = null;
+
+      if (imageData && imageData.urls && imageData.urls.small) {
+        payload = createPayload(
+          imageData.urls.small,
+          dictionaryDataToSet,
+          searchTerm
+        );
+      } else {
+        console.log("FetchData 404 Error: ",searchTerm, "IS NOT FOUND");
+      }
 
       return payload;
     } catch (error) {
@@ -159,6 +158,22 @@ export default function Dictionary() {
       part_of_speech,
       image_url,
     };
+  };
+
+  const debouncedSearch = debounce(async () => {
+    setIsLoading(true);
+    await handleSearch();
+  }, 500);
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      debouncedSearch();
+    }
+  };
+
+  const clearSearchTerm = () => {
+    setSearchTermHeading(searchTerm);
+    setSearchTerm("");
   };
 
   const renderDefinitions = () => {
@@ -192,10 +207,11 @@ export default function Dictionary() {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder={isLoading ? "Loading..." : searchPlaceholder}
-            className={`w-3/4 px-4 py-2 font-semibold border-2 border-coffeeBrown rounded-md focus:outline-double focus:ring-coffeeDark focus:border-coffeeDark ${isLoading
-              ? "ring-coffeeDark border-coffeeDark transition ease-in-out duration-300"
-              : ""
-              }`}
+            className={`w-3/4 px-4 py-2 font-semibold border-2 border-coffeeBrown rounded-md focus:outline-double focus:ring-coffeeDark focus:border-coffeeDark ${
+              isLoading
+                ? "ring-coffeeDark border-coffeeDark transition ease-in-out duration-300"
+                : ""
+            }`}
             onKeyDown={handleKeyPress}
             disabled={isLoading}
           />
@@ -203,8 +219,9 @@ export default function Dictionary() {
           <button
             onClick={debouncedSearch}
             disabled={isLoading}
-            className={`bg-coffeeBrown text-white text-base font-semibold italic py-2 px-4 rounded shadow-sm shadow-coffeeDark hover:bg-coffeeDark focus:ring-coffeeDark w-24 ${isLoading ? "w-24 bg-coffeeDark" : ""
-              }`}
+            className={`bg-coffeeBrown text-white text-base font-semibold italic py-2 px-4 rounded shadow-sm shadow-coffeeDark hover:bg-coffeeDark focus:ring-coffeeDark w-24 ${
+              isLoading ? "w-24 bg-coffeeDark" : ""
+            }`}
           >
             {isLoading ? "Loading..." : "Search"}
           </button>
