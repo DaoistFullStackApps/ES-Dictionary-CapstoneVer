@@ -2,22 +2,31 @@ import React, { useRef, useState } from "react";
 import axiosClient from "../axios-client.js";
 import Draggable from 'react-draggable';
 import { debounce } from "lodash";
-import download from "downloadjs";
+import domtoimage from 'dom-to-image';
+import jsPDF from 'jspdf';
 
 export default function Dictionary() {
-
   const divRef = useRef(null);
 
-  const handleDownload = () => {
+  const handleDownload = async () => {
     const element = divRef.current;
 
-    const content = element.innerHTML;
-    const fileName = "content.html";
+    const dataUrl = await domtoimage.toPng(element);
 
-    const blob = new Blob([content], { type: "text/html" });
-    download(blob, fileName);
+    const pdf = new jsPDF('p', 'mm', 'a4');
+
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = pdf.internal.pageSize.getHeight();
+
+    const imageWidth = pdfWidth * 0.8; 
+    const imageHeight = (imageWidth * element.offsetHeight) / element.offsetWidth;
+
+    const xPos = (pdfWidth - imageWidth) / 2;
+    const yPos = (pdfHeight - imageHeight) / 2;
+
+    pdf.addImage(dataUrl, 'PNG', xPos, yPos, imageWidth, imageHeight);
+    pdf.save('dictionary.pdf');
   };
-
 
   const [searchTerm, setSearchTerm] = useState("");
   const [searchTermHeading, setSearchTermHeading] = useState("");
@@ -144,7 +153,7 @@ export default function Dictionary() {
           searchTerm
         );
       } else {
-        console.log("FetchData 404 Error: ",searchTerm, "IS NOT FOUND");
+        console.log("FetchData 404 Error: ", searchTerm, "IS NOT FOUND");
       }
 
       return payload;
@@ -216,7 +225,7 @@ export default function Dictionary() {
 
   return (
     <div className="bg-coffee flex min-h-screen justify-center items-center">
-      
+
       <div className="w-2/4 mx-auto min-w-full" id="dictionary_content">
         <div className="max-w-md mx-auto mb-4 flex justify-evenly space-x-4">
           <input
@@ -224,11 +233,10 @@ export default function Dictionary() {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder={isLoading ? "Loading..." : searchPlaceholder}
-            className={`w-3/4 px-4 py-2 font-semibold border-2 border-coffeeBrown rounded-md focus:outline-double focus:ring-coffeeDark focus:border-coffeeDark ${
-              isLoading
-                ? "ring-coffeeDark border-coffeeDark transition ease-in-out duration-300"
-                : ""
-            }`}
+            className={`w-3/4 px-4 py-2 font-semibold border-2 border-coffeeBrown rounded-md focus:outline-double focus:ring-coffeeDark focus:border-coffeeDark ${isLoading
+              ? "ring-coffeeDark border-coffeeDark transition ease-in-out duration-300"
+              : ""
+              }`}
             onKeyDown={handleKeyPress}
             disabled={isLoading}
           />
@@ -236,46 +244,49 @@ export default function Dictionary() {
           <button
             onClick={debouncedSearch}
             disabled={isLoading}
-            className={`bg-coffeeBrown text-white text-base font-semibold italic py-2 px-4 rounded shadow-sm shadow-coffeeDark hover:bg-coffeeDark focus:ring-coffeeDark w-24 ${
-              isLoading ? "w-24 bg-coffeeDark" : ""
-            }`}
+            className={`bg-coffeeBrown text-white text-base font-semibold italic py-2 px-4 rounded shadow-sm shadow-coffeeDark hover:bg-coffeeDark focus:ring-coffeeDark w-24 ${isLoading ? "w-24 bg-coffeeDark" : ""
+              }`}
           >
             {isLoading ? "Loading..." : "Search"}
           </button>
         </div>
-        
+
         {dictionaryData && imageData && (
           <Draggable>
-          <div className="max-w-md mx-auto bg-coffeeMate rounded-lg border-4 border-solid border-coffeeBrown shadow-coffeeDark shadow-sm p-4">
-            <div ref={divRef}>
-            <h1 className="text-3xl text-coffeeDark font-bold italic mb-4">
-              {searchTermHeading}
-            </h1>
-            <div className="mb-4">
-              <img
-                src={imageData}
-                alt={searchTerm}
-                className="w-full rounded object-cover border-2 border-coffeeDark transition-opacity duration-500"
-                style={{
-                  maxHeight: "250px",
-                  minHeight: "250px",
-                }}
-              />
-            </div>
-            <div
-              className="flex flex-col transition-opacity duration-500"
-              style={{ maxHeight: "140px", minHeight: "140px" }}
-            >
-              <div className="flex-1 overflow-y-auto">
-                {renderDefinitions()}
+            <div className="max-w-md mx-auto bg-coffeeMate rounded-lg border-4 border-solid border-coffeeBrown shadow-coffeeDark shadow-sm p-4">
+              <div ref={divRef}>
+                <h1 className="text-3xl text-coffeeDark font-bold italic mb-4">
+                  {searchTermHeading}
+                </h1>
+                <div className="mb-4">
+                  <img
+                    src={imageData}
+                    alt={searchTerm}
+                    className="w-full rounded object-cover border-2 border-coffeeDark transition-opacity duration-500"
+                    style={{
+                      maxHeight: "250px",
+                      minHeight: "250px",
+                    }}
+                  />
+                </div>
+                <div
+                  className="flex flex-col transition-opacity duration-500"
+                  style={{ maxHeight: "140px", minHeight: "140px" }}
+                >
+                  <div className="flex-1 overflow-y-auto">
+                    {renderDefinitions()}
+                  </div>
+                </div>
               </div>
+              <button
+                className="absolute bottom-5 right-5 bg-coffeeBrown text-white text-base font-semibold italic py-2 px-4 rounded shadow-sm shadow-coffeeDark hover:bg-coffeeDark focus:ring-coffeeDark"
+                onClick={handleDownload}>
+                Download
+              </button>
             </div>
-            </div>
-          <button className="absolute bottom-5 right-5 bg-coffeeBrown text-white text-base font-semibold italic py-2 px-4 rounded shadow-sm shadow-coffeeDark hover:bg-coffeeDark focus:ring-coffeeDark" onClick={handleDownload}>Download</button>
-          </div>
           </Draggable>
         )}
-       
+
       </div>
     </div>
   );
