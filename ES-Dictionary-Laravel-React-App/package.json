@@ -27,5 +27,8 @@
   "bugs": {
     "url": "https://github.com/DaoistFullStackApps/ES-Dictionary-CapstoneVer/issues"
   },
-  "homepage": "https://github.com/DaoistFullStackApps/ES-Dictionary-CapstoneVer#readme"
+  "homepage": "https://github.com/DaoistFullStackApps/ES-Dictionary-CapstoneVer#readme",
+  "dependencies": {
+    "html-to-image": "^1.11.11"
+  }
 }

@@ -1,9 +1,24 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import axiosClient from "../axios-client.js";
 import Draggable from 'react-draggable';
 import { debounce } from "lodash";
+import download from "downloadjs";
 
 export default function Dictionary() {
+
+  const divRef = useRef(null);
+
+  const handleDownload = () => {
+    const element = divRef.current;
+
+    const content = element.innerHTML;
+    const fileName = "content.html";
+
+    const blob = new Blob([content], { type: "text/html" });
+    download(blob, fileName);
+  };
+
+
   const [searchTerm, setSearchTerm] = useState("");
   const [searchTermHeading, setSearchTermHeading] = useState("");
   const [dictionaryData, setDictionaryData] = useState(null);
@@ -232,6 +247,7 @@ export default function Dictionary() {
         {dictionaryData && imageData && (
           <Draggable>
           <div className="max-w-md mx-auto bg-coffeeMate rounded-lg border-4 border-solid border-coffeeBrown shadow-coffeeDark shadow-sm p-4">
+            <div ref={divRef}>
             <h1 className="text-3xl text-coffeeDark font-bold italic mb-4">
               {searchTermHeading}
             </h1>
@@ -254,10 +270,12 @@ export default function Dictionary() {
                 {renderDefinitions()}
               </div>
             </div>
+            </div>
+          <button className="absolute bottom-5 right-5 bg-coffeeBrown text-white text-base font-semibold italic py-2 px-4 rounded shadow-sm shadow-coffeeDark hover:bg-coffeeDark focus:ring-coffeeDark" onClick={handleDownload}>Download</button>
           </div>
           </Draggable>
         )}
-        
+       
       </div>
     </div>
   );
