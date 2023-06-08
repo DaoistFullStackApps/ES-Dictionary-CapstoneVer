@@ -7,6 +7,7 @@ import jsPDF from 'jspdf';
 import {ArrowDownTrayIcon} from "@heroicons/react/24/outline";
 import {PencilSquareIcon} from "@heroicons/react/24/outline";
 import {NewspaperIcon} from "@heroicons/react/24/outline";
+import { Link } from "react-router-dom";
 
 
 export default function Dictionary() {
@@ -331,7 +332,7 @@ export default function Dictionary() {
         <div className="popup_message">
           <p>
             In order to access the features, you need to{" "}
-            <span>sign up</span>.
+            <Link to={'/login'}><span>Log In</span></Link>.
           </p>
           <button className="bg-coffeeBrown text-white text-base font-semibold italic py-2 px-4 rounded shadow-sm shadow-coffeeDark hover:bg-coffeeDark focus:ring-coffeeDark w-24 " onClick={toggleMessage}>Cancel</button>
         </div>

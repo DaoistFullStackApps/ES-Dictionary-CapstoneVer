@@ -86,6 +86,7 @@ export default function Login() {
             </a>
           </p>
         </div>
+        <h2>Go back to Dictionary</h2>
       </div>
     </>
   );
