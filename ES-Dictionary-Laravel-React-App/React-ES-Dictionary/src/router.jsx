@@ -8,6 +8,7 @@ import NotFound from "./views/NotFound.jsx";
 import DefaultLayout from "./shared_components/DefaultLayout.jsx";
 import UserLayout from "./shared_components/UserLayout.jsx";
 import AdminLayout from "./shared_components/AdminLayout.jsx";
+import Maintenance from "./views/Maintenance.jsx";
 
 const router = createBrowserRouter([
   {
@@ -16,20 +17,24 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Navigate to="/hero" />,
+        element: <Navigate to="/maintenance" />,
       },
       {
-        path: "/hero",
-        element: <Hero />,
+        path: "*",
+        element: <Maintenance />,
       },
-      {
-        path: "/dictionary",
-        element: <Dictionary />,
-      },
-      {
-        path: "/login",
-        element: <Login />,
-      },
+      // {
+      //   path: "/hero",
+      //   element: <Hero />,
+      // },
+      // {
+      //   path: "/dictionary",
+      //   element: <Dictionary />,
+      // },
+      // {
+      //   path: "/login",
+      //   element: <Login />,
+      // },
     ],
   },
   // {
