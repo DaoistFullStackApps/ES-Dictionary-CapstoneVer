@@ -217,8 +217,8 @@ export default function Hero() {
 
   return (
     <div className="bg-coffee flex min-h-screen justify-center items-center">
-      <div className="min-w-max">
-        <div className="flex-1 px-2">
+      <div className="min-w-max" id="hero_content">
+        <div className="flex-1 px-2" id="hero_text">
           <h1 className="text-5xl font-bold text-coffeeDark mb-8 text-center">
             Expand Your Vocabulary
           </h1>
