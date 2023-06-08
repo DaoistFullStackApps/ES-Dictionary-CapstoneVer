@@ -11,11 +11,12 @@ import {NewspaperIcon} from "@heroicons/react/24/outline";
 
 export default function Dictionary() {
   // Save features
-  const [isBoxVisible, setBoxVisible] = useState(false);
+    const [isBoxVisible, setBoxVisible] = useState(false);
 
-  const handleBoxClick = () => {
-    setBoxVisible(!isBoxVisible);
-  };
+    const handleBoxClick = () => {
+      setBoxVisible(!isBoxVisible);
+    };
+
   // Popup Features
   const [showMessage, setShowMessage] = useState(false);
 
@@ -137,11 +138,13 @@ export default function Dictionary() {
   };
 
   const fetchData = async () => {
+    const cleanedSearchTerm = searchTerm.toLowerCase();
+
     const UnsplashKey = "Fj2N2fNmwFAPuSC_agE73Mfy0Sv9bqtXS3XhGEcCWSY";
-    const UnsplashUrl = `https://api.unsplash.com/photos/random?query=${searchTerm}&client_id=${UnsplashKey}`;
+    const UnsplashUrl = `https://api.unsplash.com/photos/random?query=${cleanedSearchTerm}&client_id=${UnsplashKey}`;
 
     const MerriamWebKey = "98a198a3-a200-490a-ad48-98ac95b46d80";
-    const MerriamWebUrl = `https://dictionaryapi.com/api/v3/references/collegiate/json/${searchTerm}?key=${MerriamWebKey}`;
+    const MerriamWebUrl = `https://dictionaryapi.com/api/v3/references/collegiate/json/${cleanedSearchTerm}?key=${MerriamWebKey}`;
 
     try {
       const [imageResponse, dictionaryResponse] = await Promise.all([
@@ -162,18 +165,28 @@ export default function Dictionary() {
       const dictionaryDataToSet =
         filteredData.length > 0 ? filteredData[0] : null;
 
+
+      //prototype
+      // Extract the id and remove non-letter characters
+      const id = dictionaryDataToSet?.meta?.id || '';
+      const cleanedKeyword = id.replace(/[^a-zA-Z]/g, '');
+
+      console.log('cleanedKeyword:', cleanedKeyword);
+      console.log('searchedKeyword:', searchTerm);
+
       // Create the payload using the response data
       let payload = null;
 
-      if (imageData && imageData.urls && imageData.urls.small) {
+      if (imageData && imageData.urls && imageData.urls.small && cleanedKeyword === cleanedSearchTerm) {
         payload = createPayload(
           imageData.urls.small,
           dictionaryDataToSet,
           searchTerm
         );
       } else {
-        console.log("FetchData 404 Error: ", searchTerm, "IS NOT FOUND");
+        console.log(`FetchData 404 Error: ${searchTerm} IS NOT FOUND`);
       }
+
 
       return payload;
     } catch (error) {
@@ -193,7 +206,7 @@ export default function Dictionary() {
     const part_of_speech = fl || "";
     const definition = shortdef?.[0] || "";
     const image_url = imageData;
-    const word = searchTerm;
+    const word = searchTerm.toLowerCase();
 
     return {
       word,
@@ -253,8 +266,8 @@ export default function Dictionary() {
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder={isLoading ? "Loading..." : searchPlaceholder}
             className={`w-3/4 px-4 py-2 font-semibold border-2 border-coffeeBrown rounded-md focus:outline-double focus:ring-coffeeDark focus:border-coffeeDark ${isLoading
-                ? "ring-coffeeDark border-coffeeDark transition ease-in-out duration-300"
-                : ""
+              ? "ring-coffeeDark border-coffeeDark transition ease-in-out duration-300"
+              : ""
               }`}
             onKeyDown={handleKeyPress}
             disabled={isLoading}
@@ -274,7 +287,7 @@ export default function Dictionary() {
         {dictionaryData && imageData && (
           
           <Draggable>
-           <div className="bg-coffeeMate rounded-lg border-4 border-solid border-coffeeBrown shadow-coffeeDark shadow-sm p-4"
+           <div className="max-w-md mx-auto bg-coffeeMate rounded-lg border-4 border-solid border-coffeeBrown shadow-coffeeDark shadow-sm p-4"
            id="dictionary">
            <div ref={divRef}>
             <h1 className="text-3xl text-coffeeDark font-bold italic mb-4">
@@ -306,17 +319,16 @@ export default function Dictionary() {
           </div>
           </Draggable>
         )}
-              {isBoxVisible && (
+        {isBoxVisible && (
         <div className="history_box bg-coffeeMate rounded-lg border-4 border-solid border-coffeeBrown shadow-coffeeDark shadow-sm p-4 w-40">
           <h1>Working in Progress (Stay Tune! In the future updates)</h1>
         </div>
       )}
       </div>
-
       </div>
     </div>
     {showMessage && (
-        <div className="popup_message absolute h-10 w-10">
+        <div className="popup_message">
           <p>
             In order to access the features, you need to{" "}
             <span>sign up</span>.
