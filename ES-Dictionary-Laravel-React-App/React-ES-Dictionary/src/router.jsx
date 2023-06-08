@@ -26,40 +26,41 @@ const router = createBrowserRouter([
         path: "/dictionary",
         element: <Dictionary />,
       },
-    ],
-  },
-  {
-    path: "/",
-    element: <UserLayout />,
-    children: [
-      {
-        path: "/dictionary",
-        element: <Dictionary />,
-      },
       {
         path: "/login",
         element: <Login />,
       },
-      {
-        path: "/users",
-        element: <Users />,
-      },
     ],
   },
-  {
-    path: "/",
-    element: <AdminLayout />,
-    children: [
-      {
-        path: "/login",
-        element: <Login />,
-      },
-      {
-        path: "/admin",
-        element: <Admin />,
-      },
-    ],
-  },
+  // {
+  //   path: "/",
+  //   element: <UserLayout />,
+  //   children: [
+  //     {
+  //       path: "/dictionary",
+  //       element: <Dictionary />,
+  //     },
+ 
+  //     {
+  //       path: "/users",
+  //       element: <Users />,
+  //     },
+  //   ],
+  // },
+  // {
+  //   path: "/",
+  //   element: <AdminLayout />,
+  //   children: [
+  //     {
+  //       path: "/login",
+  //       element: <Login />,
+  //     },
+  //     {
+  //       path: "/admin",
+  //       element: <Admin />,
+  //     },
+  //   ],
+  // },
 
   {
     path: "*",
