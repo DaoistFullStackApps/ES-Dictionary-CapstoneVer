@@ -1,10 +1,22 @@
+    .Dictionary_child{
+        display: flex;
+        justify-content: center;
+    }
+    
+    .history_box{
+        display: flex;
+        text-align: center;
+        align-items: center;
+    }
     .popup_message {
+        position: relative;
     transform: translate(50% , -300%);
     background-color: #ffffff;
     padding: 20px;
     border-radius: 4px;
     text-align: center;
     width: 50%;
+    bottom: 25px;
   }
   
   .popup_message p {
@@ -28,6 +40,21 @@
 .popup_message {
 }
 
+
+@Media only screen and (min-width:810px){
+    #dictionary_childcontent{
+        display: flex;   
+       width: 24.5rem;
+       gap: 0 rem;
+       }
+    #dictionary_content{
+        margin-bottom: 15rem;
+    }
+
+    #hero_content{
+        margin-bottom: 15rem;
+    }
+}
 
 @Media only screen and (min-width:601px){
 
@@ -127,7 +154,14 @@
 
 }
 
-@Media only screen and (max-width:401px){
+@Media only screen and (max-width:428px){
+   
+    #dictionary_childcontent{
+        width: 24rem;
+    }
+}
+
+@Media only screen and (max-width:412px){
 
     #hero_content #hero_text h1{
         transition: 0.5s;
@@ -139,6 +173,17 @@
 
     #hero_content #hero_text a{
         transition: .5s;
+    }
+
+    #dictionary_childcontent{
+        width: 24rem;
+    }
+
+    .container {
+        width: 26rem;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
     }
 }
 
@@ -161,4 +206,100 @@
         transition: .5s;
     }
 
+}
+
+@Media only screen and (max-width:390px){
+
+.container{
+    width: 25rem;
+}
+
+#dictionary_childcontent{
+    display: flex;   
+   width: 23rem;
+   gap: 0 rem;
+   }
+
+   #dictionary{
+       width: 23rem;
+   }
+
+}
+
+@Media only screen and (max-width:375px){
+    #hero_content{
+    margin-bottom: 10rem;
+}
+
+#hero_content #hero_text h1{
+    font-size: 180%;
+    margin-bottom: 1rem;
+    transition: 0.5s;
+}
+
+#hero_content #hero_text h2{
+    font-size: 120%;
+    margin-bottom: 1rem;
+    transition: 0.5s;
+}
+
+#hero_content #hero_text a{
+    font-size: 100%;
+    transition: .5s;
+}
+
+.container {
+    width: 24rem;
+}
+
+#dictionary_content{
+    margin-bottom: 10rem;
+}
+
+#dictionary_childcontent{
+    display: flex;   
+   width: 22rem;
+   gap: 0rem;
+   }
+#dictionary{
+    width: 22rem;
+}
+}
+
+@Media only screen and (max-width:360px){
+
+    #hero_content #hero_text h1{
+        font-size: 180%;
+        margin-bottom: 1rem;
+        transition: 0.5s;
+    }
+
+    #hero_content #hero_text h2{
+        font-size: 120%;
+        margin-bottom: 1rem;
+        transition: 0.5s;
+    }
+
+    #hero_content #hero_text a{
+        font-size: 100%;
+        transition: .5s;
+    }
+    
+    .container {
+        width: 23rem;
+    }
+
+    .childContainer{
+        margin-top: 3rem;
+    }
+
+    #dictionary_childcontent{
+     display: flex;   
+    width: 21rem;
+    gap: 0 rem;
+    }
+
+    #dictionary{
+        width: 22rem;
+    }
 }

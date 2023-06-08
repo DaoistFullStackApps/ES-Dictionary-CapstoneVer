@@ -10,6 +10,12 @@ import {NewspaperIcon} from "@heroicons/react/24/outline";
 
 
 export default function Dictionary() {
+  // Save features
+  const [isBoxVisible, setBoxVisible] = useState(false);
+
+  const handleBoxClick = () => {
+    setBoxVisible(!isBoxVisible);
+  };
   // Popup Features
   const [showMessage, setShowMessage] = useState(false);
 
@@ -239,8 +245,8 @@ export default function Dictionary() {
   return (
     <div>
     <div className={`bg-coffee flex min-h-screen justify-center items-center ${showMessage ? "blur" : ""}`}>
-      <div className="w-2/4 mx-auto min-w-full">
-        <div className="max-w-md mx-auto mb-4 flex justify-evenly space-x-4">
+      <div className="w-2/4 mx-auto min-w-full" id="dictionary_content">
+        <div className="max-w-md mx-auto mb-4 flex justify-evenly space-x-4" id="dictionary_childcontent">
           <input
             type="text"
             value={searchTerm}
@@ -263,12 +269,13 @@ export default function Dictionary() {
             {isLoading ? "Loading..." : "Search"}
           </button>
         </div>
-        <div>
+        <div className="Dictionary_child">
 
         {dictionaryData && imageData && (
           
           <Draggable>
-           <div className="max-w-md mx-auto bg-coffeeMate rounded-lg border-4 border-solid border-coffeeBrown shadow-coffeeDark shadow-sm p-4">
+           <div className="bg-coffeeMate rounded-lg border-4 border-solid border-coffeeBrown shadow-coffeeDark shadow-sm p-4"
+           id="dictionary">
            <div ref={divRef}>
             <h1 className="text-3xl text-coffeeDark font-bold italic mb-4">
               {searchTermHeading.toLowerCase()}
@@ -295,15 +302,21 @@ export default function Dictionary() {
             </div>
                 <ArrowDownTrayIcon className="absolute bottom-5 right-5 bg-coffeeBrown text-white text-base  italic py-1 px-1 rounded shadow-sm shadow-coffeeDark hover:bg-coffeeDark focus:ring-coffeeDark h-5" onClick={handleDownload}/>
                 <PencilSquareIcon className="absolute bottom-5 right-12 bg-coffeeBrown text-white text-base  italic py-1 px-1 rounded shadow-sm shadow-coffeeDark hover:bg-coffeeDark focus:ring-coffeeDark h-5" onClick={toggleMessage} />
-                <NewspaperIcon className="absolute bottom-5 right-20  bg-coffeeBrown text-white text-base  italic py-1 px-1 rounded shadow-sm shadow-coffeeDark hover:bg-coffeeDark focus:ring-coffeeDark h-5" onClick={toggleMessage} />
+                <NewspaperIcon className="absolute bottom-5 right-20  bg-coffeeBrown text-white text-base  italic py-1 px-1 rounded shadow-sm shadow-coffeeDark hover:bg-coffeeDark focus:ring-coffeeDark h-5" onClick={handleBoxClick} />
           </div>
           </Draggable>
         )}
+              {isBoxVisible && (
+        <div className="history_box bg-coffeeMate rounded-lg border-4 border-solid border-coffeeBrown shadow-coffeeDark shadow-sm p-4 w-40">
+          <h1>Working in Progress (Stay Tune! In the future updates)</h1>
+        </div>
+      )}
       </div>
+
       </div>
     </div>
     {showMessage && (
-        <div className="popup_message">
+        <div className="popup_message absolute h-10 w-10">
           <p>
             In order to access the features, you need to{" "}
             <span>sign up</span>.
