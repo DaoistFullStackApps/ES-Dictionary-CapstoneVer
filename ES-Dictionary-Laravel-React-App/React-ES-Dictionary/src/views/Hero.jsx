@@ -33,7 +33,7 @@ export default function Hero() {
     }
   };
 
-  const debouncedFetchRandomWord = debounce(fetchRandomWord, 500);
+  const debouncedFetchRandomWord = debounce(fetchRandomWord, 700);
 
   const fetchDataFromDatabase = async (word) => {
     try {
@@ -111,6 +111,13 @@ export default function Hero() {
     }
     setIsLoading(false);
   };
+
+
+   const imageApiKeys = [
+    "gVfJPtlmzZ4XoaVB4p5SdGe0ILjssdLMcDqR3FH5gn0",
+    "Fj2N2fNmwFAPuSC_agE73Mfy0Sv9bqtXS3XhGEcCWSY"
+   ]
+
 
   const fetchData = async (searchTerm) => {
     const cleanedSearchTerm = searchTerm.toLowerCase();
