@@ -11,7 +11,7 @@ export default function Hero() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const debouncedFetchRandomWord = debounce(fetchRandomWord, 500);
+    const debouncedFetchRandomWord = debounce(fetchRandomWord, 10);
     debouncedFetchRandomWord();
 
     return () => {
