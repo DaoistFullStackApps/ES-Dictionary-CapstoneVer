@@ -9,6 +9,8 @@ import DefaultLayout from "./shared_components/DefaultLayout.jsx";
 import UserLayout from "./shared_components/UserLayout.jsx";
 import AdminLayout from "./shared_components/AdminLayout.jsx";
 import Maintenance from "./views/Maintenance.jsx";
+import Hero2 from "./views/Hero2.jsx";
+import Hero3 from "./views/Hero3.jsx";
 
 const router = createBrowserRouter([
   {
@@ -17,15 +19,23 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Navigate to="/Hero" />,
+        element: <Navigate to="/hero2" />,
+      },
+      {
+        path: "/dictionary",
+        element: <Dictionary />,
       },
       {
         path: "/hero",
         element: <Hero />,
       },
       {
-        path: "/dictionary",
-        element: <Dictionary />,
+        path: "/hero2",
+        element: <Hero2 />,
+      },
+      {
+        path: "/hero3",
+        element: <Hero3 />,
       },
       {
         path: "/login",
@@ -45,7 +55,7 @@ const router = createBrowserRouter([
   //       path: "/dictionary",
   //       element: <Dictionary />,
   //     },
- 
+
   //     {
   //       path: "/users",
   //       element: <Users />,
