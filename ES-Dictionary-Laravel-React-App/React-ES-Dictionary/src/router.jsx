@@ -17,24 +17,24 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Navigate to="/maintenance" />,
+        element: <Navigate to="/Hero" />,
       },
       {
-        path: "*",
+        path: "/hero",
+        element: <Hero />,
+      },
+      {
+        path: "/dictionary",
+        element: <Dictionary />,
+      },
+      {
+        path: "/login",
+        element: <Login />,
+      },
+      {
+        path: "/maintenance",
         element: <Maintenance />,
       },
-      // {
-      //   path: "/hero",
-      //   element: <Hero />,
-      // },
-      // {
-      //   path: "/dictionary",
-      //   element: <Dictionary />,
-      // },
-      // {
-      //   path: "/login",
-      //   element: <Login />,
-      // },
     ],
   },
   // {
