@@ -71,13 +71,13 @@ export default function Hero3() {
                     src={wordData.dictionaryData.image_url}
                     alt={wordData.word}
                     className="w-full rounded object-cover"
-                    style={{ maxHeight: "200px", minHeight: "200px" }}
+                    style={{ maxHeight: "150px", minHeight: "150px", width: "300px" }}
                   />
                 )}
               </div>
               <div
                 className="flex flex-col"
-                style={{ maxHeight: "140px", minHeight: "140px" }}
+                style={{ maxHeight: "150px", minHeight: "150px", width: "300px" }}
               >
                 <div className="flex-1 overflow-y-auto">
                   {renderDefinitions(wordData.dictionaryData)}
