@@ -8,7 +8,7 @@ export default function DefaultLayout() {
     <div className="min-h-screen">
       <div className="flex p-3 my-auto items-center bg-coffee text-black space-x-1">
        <BookOpenIcon className="w-8"/>
-        <Link className="text-2xl font-bold mb-2" to={'/hero'}>es-dictionary</Link>
+        <Link className="text-2xl font-bold mb-2" to={'/hero2'}>es-dictionary</Link>
       </div>
       <div className="childContainer">
         <Outlet />
