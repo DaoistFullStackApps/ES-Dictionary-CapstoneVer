@@ -13,16 +13,16 @@ export const RenderImage = ({ dictionaryData }) =>
 export const RenderDefinitions = ({ dictionaryData }) =>
   dictionaryData && (
     <div className="mb-4">
-      <div className="mb-2">
-        <span className="bg-coffeeBrown text-black font-semibold py-1 px-2 rounded mr-2">
-          {dictionaryData.pronunciation}
-        </span>
-        {dictionaryData.part_of_speech && (
-          <span className="bg-coffeeBrown text-black italic py-1 px-2 rounded mr-2">
-            {dictionaryData.part_of_speech}
-          </span>
-        )}
-      </div>
-      {dictionaryData.definition && <p>{dictionaryData.definition}</p>}
+    <div className="mb-2" id="hero_pronunciation">
+    <span className="bg-coffeeBrown text-black font-semibold py-1 px-2 rounded mr-2" >
+      {dictionaryData.pronunciation}
+    </span>
+    {dictionaryData.part_of_speech && (
+      <span className="bg-coffeeBrown text-black italic py-1 px-2 rounded mr-2">
+        {dictionaryData.part_of_speech}
+      </span>
+    )}
+    </div>
+      {dictionaryData.definition && <p id="hero_definition">{dictionaryData.definition}</p>}
     </div>
   );

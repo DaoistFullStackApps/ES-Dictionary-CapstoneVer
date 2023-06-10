@@ -236,7 +236,7 @@ export default function Dictionary() {
 
     return (
       <div className="mb-4">
-        <div className="mb-2">
+        <div className="mb-2" id="dictionary_pronunciation">
           <span className="bg-coffeeBrown text-black font-semibold py-1 px-2 rounded mr-2">
             {hwi && hwi.hw}
           </span>
@@ -246,7 +246,7 @@ export default function Dictionary() {
             </span>
           )}
         </div>
-        {shortdef && shortdef.length > 0 && <p>{shortdef[0]}</p>}
+        {shortdef && shortdef.length > 0 && <p id="dictionary_definition">{shortdef[0]}</p>}
       </div>
     );
   };

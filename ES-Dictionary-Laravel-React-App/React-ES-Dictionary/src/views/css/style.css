@@ -40,6 +40,29 @@
 .popup_message {
 }
 
+#hero_pronunciation{
+  position: fixed;
+  z-index: 2;
+}
+
+#hero_definition{
+position: relative;
+top: 30px;
+z-index: 0;
+}
+
+#dictionary_pronunciation{
+  position: fixed;
+  z-index: 2;
+}
+
+#dictionary_definition{
+  position: relative;
+top: 30px;
+z-index: 0;
+}
+
+/* media queries */
 @media only screen and (min-width: 810px) {
   #dictionary_childcontent {
     display: flex;
@@ -106,6 +129,16 @@
     font-size: 120%;
     transition: 0.5s;
   }
+
+  #feature_word{
+    font-size: 160%;
+    transition: 0.5s;
+    margin-left: 4%;
+  }
+
+  #dictionary_hero{
+    width: 92%;
+  }
 }
 
 @media only screen and (max-width: 461px) {
@@ -120,11 +153,13 @@
   #hero_content #hero_text a {
     transition: 0.5s;
   }
+
+
 }
 
 @media only screen and (max-width: 460px) {
   #hero_content #hero_text h1 {
-    font-size: 200%;
+    font-size: 210%;
     transition: 0.5s;
   }
 
@@ -142,11 +177,25 @@
     margin-bottom: 15rem;
     transition: 0.5s;
   }
+
+  #feature_word{
+    font-size: 150%;
+    transition: 0.5s;
+    margin-left: 6%;
+  }
+
+  #dictionary_hero{
+    width: 88%;
+  }
 }
 
 @media only screen and (max-width: 428px) {
   #dictionary_childcontent {
-    width: 24rem;
+    width: 90%;
+  }
+
+  #dictionary {
+    width: 90%;
   }
 }
 
@@ -173,12 +222,17 @@
     align-items: center;
     text-align: center;
   }
+
+  #dictionary{
+    width: 93%;
+  }
+
 }
 
 @media only screen and (max-width: 400px) {
   #hero_content #hero_text h1 {
+    padding-top: 1rem;
     font-size: 200%;
-    margin-bottom: 1rem;
     transition: 0.5s;
   }
 
@@ -192,6 +246,16 @@
     font-size: 120%;
     transition: 0.5s;
   }
+
+  #feature_word{
+    font-size: 150%;
+    transition: 0.5s;
+    margin-left: 7%;
+  }
+
+  #dictionary_hero{
+    width: 86%;
+  }
 }
 
 @media only screen and (max-width: 390px) {
@@ -201,12 +265,12 @@
 
   #dictionary_childcontent {
     display: flex;
-    width: 23rem;
+    width: 90%;
     gap: 0 rem;
   }
 
   #dictionary {
-    width: 23rem;
+    width: 90%;
   }
 }
 
@@ -222,7 +286,7 @@
   }
 
   #hero_content #hero_text h2 {
-    font-size: 120%;
+    font-size: 130%;
     margin-bottom: 1rem;
     transition: 0.5s;
   }
@@ -232,6 +296,9 @@
     transition: 0.5s;
   }
 
+  #feature_word{
+    font-size: 130%;
+  }
   .container {
     width: 24rem;
   }
@@ -283,6 +350,72 @@
   }
 
   #dictionary {
-    width: 22rem;
+    width: 94%;
   }
+}
+
+@media only screen and (height: 1280px) {
+#dictionary_content{
+  margin-bottom: 25%;
+}
+
+#hero_content{
+  margin-bottom: 25%;
+}
+}
+
+@media only screen and (max-height: 760px) {
+
+  #dictionary_hero{
+    max-height: 26rem;
+  }
+}
+
+
+@media only screen and (max-height: 667px) {
+  #hero_content #hero_text h1 {
+    font-size: 180%;
+    padding: 0;
+    transition: 0.5s;
+  }
+
+  #hero_content #hero_text h2 {
+    font-size: 140%;
+    margin-bottom: 1rem;
+    transition: 0.5s;
+  }
+
+  #hero_content #hero_text a {
+    font-size: 100%;
+    padding: 0.2rem;
+    margin-bottom: 0;
+    transition: 0.5s;
+    text-decoration: none;
+  }
+
+  #feature_word{
+    font-size: 120%;
+    transition: 0.5s;
+    margin-left: 7%;
+    margin-bottom: 0;
+  }
+  
+  .container{
+    margin-top: 0.5rem;
+  }
+  #dictionary_hero{
+    width: 86%;
+    padding-top: 0;
+    height: 24rem;
+  }
+
+  #dictionary_hero h1{
+    font-size: 140%; 
+    margin-bottom: 0;   
+}
+
+#dictionary_hero div div div{ 
+  font-size: 90%;
+}
+
 }

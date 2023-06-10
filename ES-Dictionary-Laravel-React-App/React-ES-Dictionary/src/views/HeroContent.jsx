@@ -27,18 +27,18 @@ export default function HeroContent({ isLoading, dictionaryData }) {
           </div>
         </div>
         <div className="container mx-auto px-4 mt-8">
-          <h2 className="max-w-md mx-auto text-3xl font-bold text-gray-800 mb-4 text-left">
+          <h2 className="max-w-md mx-auto text-3xl font-bold text-gray-800 mb-4 text-left" id="feature_word">
             Featured Word
           </h2>
           {isLoading ? (
-            <div className="max-w-md mx-auto bg-coffeeMate rounded-lg border-4 border-solid border-coffeeBrown shadow-coffeeDark shadow-sm p-4">
+            <div className="max-w-md mx-auto bg-coffeeMate rounded-lg border-4 border-solid border-coffeeBrown shadow-coffeeDark shadow-sm p-4" id="dictionary_hero">
               <h1 className="font-bold m-auto flex justify-center">
                 <Loading className="text-sm" />
               </h1>
             </div>
           ) : (
             dictionaryData && (
-              <div className="max-w-md mx-auto bg-coffeeMate rounded-lg shadow-coffeeDark shadow-sm p-4 border-4 border-solid border-coffeeBrown">
+              <div className="max-w-md mx-auto bg-coffeeMate rounded-lg shadow-coffeeDark shadow-sm p-4 border-4 border-solid border-coffeeBrown" id="dictionary_hero">
                 <h1 className="text-3xl text-coffeeDark font-bold italic mb-4 text-left">
                   {dictionaryData.word}
                 </h1>
