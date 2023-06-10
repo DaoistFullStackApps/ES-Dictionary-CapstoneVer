@@ -27,16 +27,17 @@ export default function Hero() {
       }
 
       const {
-        word: searchWord,
+        word: word,
         image_url,
         part_of_speech,
         definition,
         pronunciation,
       } = data.word;
 
-      setRandomWord(searchWord);
+      setRandomWord(word);
 
       setDictionaryData({
+        word,
         part_of_speech,
         image_url,
         definition,
@@ -50,12 +51,12 @@ export default function Hero() {
 
   const renderImage = () => {
     if (!dictionaryData) return null;
-    const { image_url, word } = dictionaryData;
+    const { image_url, word, pronunciation, part_of_speech } = dictionaryData;
 
     return (
       <img
         src={image_url}
-        alt={word}
+        alt={`${word} is a ${part_of_speech}, pronounced as '${pronunciation}' `}
         className="w-full rounded object-cover"
         style={{ maxHeight: "200px", minHeight: "200px" }}
       />
@@ -102,7 +103,7 @@ export default function Hero() {
             </Link>
           </div>
         </div>
-        <div className="container mx-auto px-4 mt-16">
+        <div className="container mx-auto px-4 mt-8">
           <h2 className="max-w-md mx-auto text-3xl font-bold text-gray-800 mb-4">
             Featured Word
           </h2>
