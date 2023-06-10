@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import Draggable from "react-draggable";
 import axiosClient from "../axios-client.js";
 import debounce from "lodash/debounce";
 
@@ -92,42 +91,39 @@ export default function Hero() {
             </Link>
           </div>
         </div>
-        <div className="container mx-auto px-4 mt-16">
-          <h2 className="max-w-md mx-auto text-3xl font-bold text-gray-800 mb-4">
+        <div className="container mx-auto px-4 mt-8 sm:mt-16">
+          <h2 className="max-w-full mx-auto text-3xl font-bold text-gray-800 mb-4">
             Featured Word
           </h2>
           {isLoading ? (
-            <div className="max-w-md mx-auto bg-coffeeMate rounded-lg border-4 border-solid border-coffeeBrown shadow-coffeeDark shadow-sm p-4">
+            <div className="max-w-full mx-auto bg-coffeeMate rounded-lg border-4 border-solid border-coffeeBrown shadow-coffeeDark shadow-sm p-4">
               <h1 className="text-3xl font-bold m-auto flex justify-center">
                 Loading...
               </h1>
             </div>
           ) : (
-            <Draggable>
-              <div className="max-w-md mx-auto bg-coffeeMate rounded-lg shadow-coffeeDark shadow-sm p-4 border-4 border-solid border-coffeeBrown">
-                <h1 className="text-3xl text-coffeeDark font-bold italic mb-4">
-                  {word}
-                </h1>
-                <div className="mb-4">
-                  {imageData && (
-                    <img
-                      src={imageData}
-                      alt={word}
-                      className="w-full rounded object-cover"
-                      style={{ maxHeight: "200px", minHeight: "200px" }}
-                    />
-                  )}
-                </div>
-                <div
-                  className="flex flex-col"
-                  style={{ maxHeight: "140px", minHeight: "140px" }}
-                >
-                  <div className="flex-1 overflow-y-auto">
-                    {renderDefinitions()}
-                  </div>
+            <div className="max-w-full mx-auto bg-coffeeMate rounded-lg shadow-coffeeDark shadow-sm p-4 border-4 border-solid border-coffeeBrown text-left">
+              <h1 className="text-3xl text-coffeeDark font-bold italic mb-6">
+                {word}
+              </h1>
+              <div
+                className="w-full h-0 relative"
+                style={{ paddingBottom: "75%" }}
+              >
+                {imageData && (
+                  <img
+                    src={imageData}
+                    alt={word}
+                    className="absolute inset-0 w-full h-full object-cover rounded"
+                  />
+                )}
+              </div>
+              <div className="flex flex-col h-140 mt-2">
+                <div className="flex-1 overflow-y-auto">
+                  {renderDefinitions()}
                 </div>
               </div>
-            </Draggable>
+            </div>
           )}
         </div>
       </div>
