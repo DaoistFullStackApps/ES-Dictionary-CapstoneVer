@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import Draggable from "react-draggable";
+// import Draggable from "react-draggable";
 import axiosClient from "../axios-client.js";
 import debounce from "lodash/debounce";
 
@@ -60,7 +60,7 @@ export default function Hero3() {
     return (
       <div className="flex space-x-4">
         {words.map((wordData, index) => (
-          <Draggable key={index}>
+          // <Draggable key={index}>
             <div className="max-w-md mx-auto bg-coffeeMate rounded-lg shadow-coffeeDark shadow-sm p-4 border-4 border-solid border-coffeeBrown">
               <h1 className="text-3xl text-coffeeDark font-bold italic mb-4">
                 {wordData.word}
@@ -84,7 +84,7 @@ export default function Hero3() {
                 </div>
               </div>
             </div>
-          </Draggable>
+          // </Draggable>
         ))}
       </div>
     );
