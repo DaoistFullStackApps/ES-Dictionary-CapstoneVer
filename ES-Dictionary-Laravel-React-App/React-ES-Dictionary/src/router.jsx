@@ -1,6 +1,7 @@
 import { createBrowserRouter, Navigate, Link } from "react-router-dom";
 import Login from "./views/Login.jsx";
 import Dictionary from "./views/Dictionary.jsx";
+import Dictionary2 from "./views/Dictionary2.jsx";
 import Hero from "./views/Hero.jsx";
 import Users from "./views/Users.jsx";
 import Admin from "./views/Admin.jsx";
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
       {
         path: "/dictionary",
         element: <Dictionary />,
+      },
+      {
+        path: "/dictionary2",
+        element: <Dictionary2 />,
       },
       {
         path: "/hero",
