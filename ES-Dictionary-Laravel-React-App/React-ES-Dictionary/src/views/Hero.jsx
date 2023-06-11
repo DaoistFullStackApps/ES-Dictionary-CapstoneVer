@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import Draggable from "react-draggable";
+// import Draggable from "react-draggable";
 import axiosClient from "../axios-client.js";
 import { debounce } from "lodash";
 
@@ -252,7 +252,7 @@ export default function Hero() {
               </h1>
             </div>
           ) : (
-            <Draggable>
+            // <Draggable>
               <div className="max-w-md mx-auto bg-coffeeMate rounded-lg shadow-coffeeDark shadow-sm p-4 border-4 border-solid border-coffeeBrown">
                 <h1 className="text-3xl text-coffeeDark font-bold italic mb-4">
                   {randomWord.toLowerCase()}
@@ -276,7 +276,7 @@ export default function Hero() {
                   </div>
                 </div>
               </div>
-            </Draggable>
+            // </Draggable>
           )}
         </div>
       </div>
