@@ -1,46 +1,8 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import axiosClient from "../axios-client.js";
 import { debounce } from "lodash";
-import Draggable from "react-draggable";
-import domtoimage from "dom-to-image";
-import jsPDF from "jspdf";
-import { ArrowDownTrayIcon } from "@heroicons/react/24/outline";
-import { PencilSquareIcon } from "@heroicons/react/24/outline";
-import { NewspaperIcon } from "@heroicons/react/24/outline";
-import { Link } from "react-router-dom";
 
 export default function Dictionary() {
-  // Popup Features
-  const [showMessage, setShowMessage] = useState(false);
-
-  const toggleMessage = () => {
-    setShowMessage(!showMessage);
-  };
-
-  // Download Starts
-  const divRef = useRef(null);
-
-  const handleDownload = async () => {
-    const element = divRef.current;
-
-    const dataUrl = await domtoimage.toPng(element);
-
-    const pdf = new jsPDF("p", "mm", "a4");
-
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = pdf.internal.pageSize.getHeight();
-
-    const imageWidth = pdfWidth * 0.8;
-    const imageHeight =
-      (imageWidth * element.offsetHeight) / element.offsetWidth;
-
-    const xPos = (pdfWidth - imageWidth) / 2;
-    const yPos = (pdfHeight - imageHeight) / 2;
-
-    pdf.addImage(dataUrl, "PNG", xPos, yPos, imageWidth, imageHeight);
-    pdf.save("dictionary.pdf");
-  };
-  // Download Ends
   const [searchTerm, setSearchTerm] = useState("");
   const [searchTermHeading, setSearchTermHeading] = useState("");
   const [dictionaryData, setDictionaryData] = useState(null);
@@ -84,7 +46,7 @@ export default function Dictionary() {
       }
 
       const payload = await fetchData();
-      // console.log(payload);
+
       if (!payload) {
         // console.log("POST store halted as fetchData encountered an ERROR");
         const errorMessage = `The word ${searchTerm} was invalid!`;
@@ -246,18 +208,16 @@ export default function Dictionary() {
             </span>
           )}
         </div>
-        {shortdef && shortdef.length > 0 && <p id="dictionary_definition">{shortdef[0]}</p>}
+        {shortdef && shortdef.length > 0 && (
+          <p id="dictionary_definition">{shortdef[0]}</p>
+        )}
       </div>
     );
   };
 
   return (
     <div>
-      <div
-        className={`bg-coffee flex min-h-screen justify-center items-center ${
-          showMessage ? "blur" : ""
-        }`}
-      >
+      <div className="bg-coffee flex min-h-screen justify-center items-center ">
         <div className="w-2/4 mx-auto min-w-full" id="dictionary_content">
           <div
             className="max-w-md mx-auto mb-4 flex justify-evenly space-x-4"
@@ -289,69 +249,39 @@ export default function Dictionary() {
           </div>
           <div>
             {dictionaryData && imageData && (
-              <Draggable>
-                <div
-                  className="max-w-md mx-auto bg-coffeeMate rounded-lg border-4 border-solid border-coffeeBrown shadow-coffeeDark shadow-sm p-4"
-                  id="dictionary"
-                >
-                  <div ref={divRef}>
-                    <h1 className="text-3xl text-coffeeDark font-bold italic mb-4">
-                      {searchTermHeading.toLowerCase()}
-                    </h1>
-                    <div className="mb-4">
-                      <img
-                        src={imageData}
-                        alt={searchTerm}
-                        className="w-full rounded object-cover border-2 border-coffeeDark transition-opacity duration-500"
-                        style={{
-                          maxHeight: "250px",
-                          minHeight: "250px",
-                        }}
-                      />
-                    </div>
-                    <div
-                      className="flex flex-col transition-opacity duration-500"
-                      style={{ maxHeight: "140px", minHeight: "140px" }}
-                    >
-                      <div className="flex-1 overflow-y-auto">
-                        {renderDefinitions()}
-                      </div>
+              <div
+                className="max-w-md mx-auto bg-coffeeMate rounded-lg border-4 border-solid border-coffeeBrown shadow-coffeeDark shadow-sm p-4"
+                id="dictionary"
+              >
+                <div>
+                  <h1 className="text-3xl text-coffeeDark font-bold italic mb-4">
+                    {searchTermHeading.toLowerCase()}
+                  </h1>
+                  <div className="mb-4">
+                    <img
+                      src={imageData}
+                      alt={searchTerm}
+                      className="w-full rounded object-cover border-2 border-coffeeDark transition-opacity duration-500"
+                      style={{
+                        maxHeight: "250px",
+                        minHeight: "250px",
+                      }}
+                    />
+                  </div>
+                  <div
+                    className="flex flex-col transition-opacity duration-500"
+                    style={{ maxHeight: "140px", minHeight: "140px" }}
+                  >
+                    <div className="flex-1 overflow-y-auto">
+                      {renderDefinitions()}
                     </div>
                   </div>
-                  <ArrowDownTrayIcon
-                    className="absolute bottom-5 right-5 bg-coffeeBrown text-white text-base  italic py-1 px-1 rounded shadow-sm shadow-coffeeDark hover:bg-coffeeDark focus:ring-coffeeDark h-5"
-                    onClick={handleDownload}
-                  />
-                  <PencilSquareIcon
-                    className="absolute bottom-5 right-12 bg-coffeeBrown text-white text-base  italic py-1 px-1 rounded shadow-sm shadow-coffeeDark hover:bg-coffeeDark focus:ring-coffeeDark h-5"
-                    onClick={toggleMessage}
-                  />
-                  <NewspaperIcon
-                    className="absolute bottom-5 right-20  bg-coffeeBrown text-white text-base  italic py-1 px-1 rounded shadow-sm shadow-coffeeDark hover:bg-coffeeDark focus:ring-coffeeDark h-5"
-                    onClick={toggleMessage}
-                  />
                 </div>
-              </Draggable>
+              </div>
             )}
           </div>
         </div>
       </div>
-      {showMessage && (
-        <div className="popup_message">
-          <p>
-            In order to access the features, you need to{" "}
-            <Link to={"/login"}>
-              <span>Log in</span>
-            </Link>
-          </p>
-          <button
-            className="bg-coffeeBrown text-white text-base font-semibold italic py-2 px-4 rounded shadow-sm shadow-coffeeDark hover:bg-coffeeDark focus:ring-coffeeDark w-24 "
-            onClick={toggleMessage}
-          >
-            Cancel
-          </button>
-        </div>
-      )}
     </div>
   );
 }
