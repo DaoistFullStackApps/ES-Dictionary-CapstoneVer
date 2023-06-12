@@ -2,7 +2,7 @@ import React, { lazy, Suspense } from "react";
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import Hero2 from "./views/Hero2.jsx";
 import DefaultLayout from "./shared_components/DefaultLayout.jsx";
-import Loading from "./helper_functions/Loading.jsx";
+import PageLoading from "./helper_functions/PageLoading.jsx";
 const Hero = lazy(() => import("./views/Hero.jsx"));
 const Hero3 = lazy(() => import("./views/Hero3.jsx"));
 const Dictionary = lazy(() => import("./views/Dictionary.jsx"));
@@ -26,30 +26,30 @@ const router = createBrowserRouter([
       },
       {
         path: "/dictionary",
-        element: <Suspense fallback={<Loading />}><Dictionary /></Suspense>
+        element: <Suspense fallback={<PageLoading />}><Dictionary /></Suspense>
       },
       {
         path: "/hero",
-        element: <Suspense fallback={<Loading />}><Hero /></Suspense>
+        element: <Suspense fallback={<PageLoading />}><Hero /></Suspense>
       },
       {
         path: "/hero3",
-        element: <Suspense fallback={<Loading />}><Hero3 /></Suspense>
+        element: <Suspense fallback={<PageLoading />}><Hero3 /></Suspense>
       },
       {
         path: "/login",
-        element: <Suspense fallback={<Loading />}><Login /></Suspense>
+        element: <Suspense fallback={<PageLoading />}><Login /></Suspense>
       },
       {
         path: "/maintenance",
-        element: <Suspense fallback={<Loading />}><Maintenance /></Suspense>
+        element: <Suspense fallback={<PageLoading />}><Maintenance /></Suspense>
       },
     ],
   },
 
   {
     path: "*",
-    element:<Suspense fallback={<Loading />}><NotFound /></Suspense>
+    element:<Suspense fallback={<PageLoading />}><NotFound /></Suspense>
   },
 ]);
 
