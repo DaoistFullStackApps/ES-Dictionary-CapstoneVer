@@ -47,7 +47,7 @@ export default function HeroContent({ isLoading, dictionaryData }) {
                 </div>
                 <div
                   className="flex flex-col"
-                  style={{ maxHeight: "140px", minHeight: "140px" }}
+                  style={{ maxHeight: "200px", minHeight: "200px", maxWidth: "300px", minWidth: "300px" }}
                 >
                   <div className="flex-1 overflow-y-auto text-left">
                     <RenderDefinitions dictionaryData={dictionaryData} />
