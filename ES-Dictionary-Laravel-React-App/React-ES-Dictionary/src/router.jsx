@@ -1,90 +1,55 @@
-import { createBrowserRouter, Navigate, Link } from "react-router-dom";
-import Login from "./views/Login.jsx";
-import Dictionary from "./views/Dictionary.jsx";
-import Dictionary2 from "./views/Dictionary2.jsx";
-import Hero from "./views/Hero.jsx";
-import Users from "./views/Users.jsx";
-import Admin from "./views/Admin.jsx";
-import NotFound from "./views/NotFound.jsx";
-import DefaultLayout from "./shared_components/DefaultLayout.jsx";
-import UserLayout from "./shared_components/UserLayout.jsx";
-import AdminLayout from "./shared_components/AdminLayout.jsx";
-import Maintenance from "./views/Maintenance.jsx";
+import React, { lazy, Suspense } from "react";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import Hero2 from "./views/Hero2.jsx";
-import Hero3 from "./views/Hero3.jsx";
+import DefaultLayout from "./shared_components/DefaultLayout.jsx";
+import Loading from "./helper_functions/Loading.jsx";
+const Hero = lazy(() => import("./views/Hero.jsx"));
+const Hero3 = lazy(() => import("./views/Hero3.jsx"));
+const Dictionary = lazy(() => import("./views/Dictionary.jsx"));
+const Login = lazy(() => import("./views/Login.jsx"));
+const Maintenance = lazy(() => import("./views/Maintenance.jsx"));
+const NotFound = lazy(() => import("./views/NotFound.jsx"));
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <DefaultLayout />,
+    errorElement: <NotFound />,
     children: [
       {
         path: "/",
-        element: <Navigate to="/hero2" />,
-      },
-      {
-        path: "/dictionary",
-        element: <Dictionary />,
-      },
-      {
-        path: "/dictionary2",
-        element: <Dictionary2 />,
-      },
-      {
-        path: "/hero",
-        element: <Hero />,
+        element: <Navigate to="/hero2" />
       },
       {
         path: "/hero2",
         element: <Hero2 />,
       },
       {
+        path: "/dictionary",
+        element: <Suspense fallback={<Loading />}><Dictionary /></Suspense>
+      },
+      {
+        path: "/hero",
+        element: <Suspense fallback={<Loading />}><Hero /></Suspense>
+      },
+      {
         path: "/hero3",
-        element: <Hero3 />,
+        element: <Suspense fallback={<Loading />}><Hero3 /></Suspense>
       },
       {
         path: "/login",
-        element: <Login />,
+        element: <Suspense fallback={<Loading />}><Login /></Suspense>
       },
       {
         path: "/maintenance",
-        element: <Maintenance />,
+        element: <Suspense fallback={<Loading />}><Maintenance /></Suspense>
       },
     ],
   },
-  // {
-  //   path: "/",
-  //   element: <UserLayout />,
-  //   children: [
-  //     {
-  //       path: "/dictionary",
-  //       element: <Dictionary />,
-  //     },
-
-  //     {
-  //       path: "/users",
-  //       element: <Users />,
-  //     },
-  //   ],
-  // },
-  // {
-  //   path: "/",
-  //   element: <AdminLayout />,
-  //   children: [
-  //     {
-  //       path: "/login",
-  //       element: <Login />,
-  //     },
-  //     {
-  //       path: "/admin",
-  //       element: <Admin />,
-  //     },
-  //   ],
-  // },
 
   {
     path: "*",
-    element: <NotFound />,
+    element:<Suspense fallback={<Loading />}><NotFound /></Suspense>
   },
 ]);
 
