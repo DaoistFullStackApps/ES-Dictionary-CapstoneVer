@@ -134,11 +134,11 @@ export default function Dictionary() {
       if (
         imageData &&
         imageData.urls &&
-        imageData.urls.small &&
+        imageData.urls.thumb &&
         cleanedKeyword === cleanedSearchTerm
       ) {
         payload = createPayload(
-          imageData.urls.small,
+          imageData.urls.thumb,
           dictionaryDataToSet,
           searchTerm
         );
