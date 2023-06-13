@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axiosClient from "../axios-client.js";
-import debounce from "lodash/debounce";
 import HeroContent from "./HeroContent.jsx";
 
 export default function Hero() {
@@ -8,12 +7,7 @@ export default function Hero() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const debouncedFetchRandomWord = debounce(fetchRandomWord, 10);
-    debouncedFetchRandomWord();
-
-    return () => {
-      debouncedFetchRandomWord.cancel();
-    };
+    fetchRandomWord();
   }, []);
 
   const fetchRandomWord = async () => {
