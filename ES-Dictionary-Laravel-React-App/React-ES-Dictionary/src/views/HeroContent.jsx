@@ -8,13 +8,13 @@ import {
 
 export default function HeroContent({ isLoading, dictionaryData }) {
   return (
-    <div className="bg-coffee flex min-h-screen justify-center items-center">
+    <div className="bg-coffee flex min-h-screen justify-center items-top">
       <div className="min-w-max" id="hero_content">
         <div className="flex-1 px-2" id="hero_text">
           <h1 className="text-5xl font-bold text-coffeeDark mb-8 text-center">
             Expand Your Vocabulary
           </h1>
-          <h2 className="text-3xl font-semibold text-gray-800 mb-8 text-center">
+          <h2 className="text-3xl font-semibold text-gray-800 mb-3 text-center">
             Discover words and definitions
           </h2>
           <div className="flex justify-center">
@@ -26,8 +26,8 @@ export default function HeroContent({ isLoading, dictionaryData }) {
             </Link>
           </div>
         </div>
-        <div className="container mx-auto px-4 mt-8">
-          <h2 className="max-w-md mx-auto text-3xl font-bold text-gray-800 mb-4 text-left" id="feature_word">
+        <div className="container mx-auto px-4 mt-7">
+          <h2 className="max-w-30px text-6xl font-bold text-gray-800 mb-6 text-center" id="feature_word">
             Featured Word
           </h2>
           {isLoading ? (
@@ -47,7 +47,7 @@ export default function HeroContent({ isLoading, dictionaryData }) {
                 </div>
                 <div
                   className="flex flex-col"
-                  style={{ maxHeight: "140px", minHeight: "140px" }}
+                  style={{ maxHeight: "100px", minHeight: "100px", width: "100%" }}
                 >
                   <div className="flex-1 overflow-y-auto text-left">
                     <RenderDefinitions dictionaryData={dictionaryData} />
