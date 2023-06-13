@@ -6,7 +6,7 @@ export const RenderImage = ({ dictionaryData }) =>
       src={dictionaryData.image_url}
       alt={`${dictionaryData.word} is a ${dictionaryData.part_of_speech}, pronounced as '${dictionaryData.pronunciation}'`}
       className="w-full rounded object-cover"
-      style={{ maxHeight: "200px", minHeight: "200px", maxWidth: "300px", minWidth: "300px" }}
+      style={{ maxHeight: "120px", minHeight: "120px", width: "100%" }}
     />
   );
 

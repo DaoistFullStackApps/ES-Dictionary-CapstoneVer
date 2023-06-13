@@ -8,6 +8,7 @@
   text-align: center;
   align-items: center;
 }
+
 .popup_message {
   position: relative;
   transform: translate(50%, -300%);
@@ -37,9 +38,6 @@
   backdrop-filter: blur(4px);
 }
 
-.popup_message {
-}
-
 #hero_pronunciation{
   position: fixed;
   z-index: 2;
@@ -62,6 +60,11 @@ top: 30px;
 z-index: 0;
 }
 
+#hero_content #hero_text h1 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
 /* media queries */
 @media only screen and (min-width: 810px) {
   #dictionary_childcontent {
@@ -69,33 +72,28 @@ z-index: 0;
     width: 24.5rem;
     gap: 0 rem;
   }
-  #dictionary_content {
-    margin-bottom: 15rem;
-  }
 
-  #hero_content {
+  #dictionary_content {
     margin-bottom: 15rem;
   }
 }
 
-@media only screen and (min-width: 601px) {
-  #dictionary_content {
-    transition: 0.5s;
-  }
-
-  #hero_content {
-    transition: 0.5s;
-  }
+@media only screen and (max-width: 640px) {
+ #feature_word {
+  margin-right: -126px;
+  margin-left: -126px;
+  transition: 0.5s;
+ }
 }
+
 
 @media only screen and (max-width: 600px) {
-  #dictionary_content {
-    margin-bottom: 15rem;
-    transition: 0.5s;
+  #hero_content #hero_text h1 {
+    margin-bottom: 1rem;
   }
 
-  #hero_content {
-    margin-bottom: 10rem;
+  #dictionary_content {
+    margin-bottom: 15rem;
     transition: 0.5s;
   }
 }
@@ -117,11 +115,13 @@ z-index: 0;
 @media only screen and (max-width: 550px) {
   #hero_content #hero_text h1 {
     font-size: 250%;
+    margin-bottom: .5rem;
     transition: 0.5s;
   }
 
   #hero_content #hero_text h2 {
     font-size: 180%;
+    margin-bottom: .5rem;
     transition: 0.5s;
   }
 
@@ -130,15 +130,20 @@ z-index: 0;
     transition: 0.5s;
   }
 
-  #feature_word{
-    font-size: 160%;
+  #dictionary_hero{
     transition: 0.5s;
-    margin-left: 4%;
   }
 
-  #dictionary_hero{
-    width: 92%;
+  .container {
+    max-width: 22rem;
+    min-width: 22rem;
+     transition: 0.5s;
   }
+
+  #feature_word {
+    font-size: 48px;
+    transition: 0.5s;
+   }
 }
 
 @media only screen and (max-width: 461px) {
@@ -159,13 +164,16 @@ z-index: 0;
 
 @media only screen and (max-width: 460px) {
   #hero_content #hero_text h1 {
-    font-size: 210%;
+    margin-top: 1rem;
+    font-size: 230%;
     transition: 0.5s;
+    margin-bottom: .5rem;
   }
 
   #hero_content #hero_text h2 {
     font-size: 150%;
     transition: 0.5s;
+    margin-bottom: .5rem;
   }
 
   #hero_content #hero_text a {
@@ -173,23 +181,38 @@ z-index: 0;
     transition: 0.5s;
   }
 
-  #hero_content {
-    margin-bottom: 15rem;
-    transition: 0.5s;
-  }
-
-  #feature_word{
-    font-size: 150%;
-    transition: 0.5s;
-    margin-left: 6%;
-  }
-
   #dictionary_hero{
     width: 88%;
   }
+
+  .container {
+    max-width: 23rem;
+    min-width: 23rem;
+    transition: 0.5s;
+  }
+
+  #feature_word {
+    font-size: 45px;
+    transition: 0.5s;
+   }
 }
 
-@media only screen and (max-width: 428px) {
+@media only screen and (max-width: 430px) {
+  #hero_content #hero_text h1 {
+    font-size: 220%;
+    transition: 0.5s;
+  }
+
+  #hero_content #hero_text h2 {
+    font-size: 130%;
+    transition: 0.5s;
+  }
+
+  #hero_content #hero_text a {
+    font-size: 90%;
+    transition: 0.5s;
+  }
+  
   #dictionary_childcontent {
     width: 90%;
   }
@@ -197,9 +220,26 @@ z-index: 0;
   #dictionary {
     width: 90%;
   }
+
+  .container {
+    max-width: 22rem;
+    min-width: 22rem;
+    transition: 0.5s;
+  }
+
+  #feature_word {
+    font-size: 43px;
+    transition: 0.5s;
+   }
 }
 
-@media only screen and (max-width: 412px) {
+@media only screen and (max-width: 420px) {
+  #hero_content #hero_text h1 {
+    font-size: 210%;
+  }
+}
+
+@media only screen and (max-width: 414px) {
   #hero_content #hero_text h1 {
     transition: 0.5s;
   }
@@ -217,50 +257,59 @@ z-index: 0;
   }
 
   .container {
-    width: 26rem;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+    max-width: 21rem;
+    min-width: 21rem;
+    transition: 0.5s;
   }
 
   #dictionary{
     width: 93%;
   }
-
 }
 
 @media only screen and (max-width: 400px) {
   #hero_content #hero_text h1 {
     padding-top: 1rem;
-    font-size: 200%;
+    font-size: 210%;
     transition: 0.5s;
   }
 
   #hero_content #hero_text h2 {
-    font-size: 150%;
-    margin-bottom: 1rem;
+    font-size: 130%;
+    margin-bottom: .5rem;
     transition: 0.5s;
   }
 
   #hero_content #hero_text a {
-    font-size: 120%;
+    font-size: 80%;
     transition: 0.5s;
-  }
-
-  #feature_word{
-    font-size: 150%;
-    transition: 0.5s;
-    margin-left: 7%;
   }
 
   #dictionary_hero{
     width: 86%;
   }
+
+  .container {
+    max-width: 21rem;
+    min-width: 21rem;
+    transition: 0.5s;
+  }
+
+  #feature_word {
+    font-size: 40px;
+    transition: 0.5s;
+   }
 }
 
 @media only screen and (max-width: 390px) {
+  #hero_content #hero_text h1 {
+    font-size: 200%;
+  }
+
   .container {
-    width: 25rem;
+    max-width: 21rem;
+    min-width: 21rem;
+    transition: 0.5s;
   }
 
   #dictionary_childcontent {
@@ -275,30 +324,24 @@ z-index: 0;
 }
 
 @media only screen and (max-width: 375px) {
-  #hero_content {
-    margin-bottom: 10rem;
-  }
-
   #hero_content #hero_text h1 {
     font-size: 180%;
-    margin-bottom: 1rem;
+    margin-bottom: .5rem;
     transition: 0.5s;
   }
 
   #hero_content #hero_text h2 {
-    font-size: 130%;
-    margin-bottom: 1rem;
+    font-size: 120%;
+    margin-bottom: .5rem;
     transition: 0.5s;
   }
 
   #hero_content #hero_text a {
-    font-size: 100%;
+    font-size: 80%;
     transition: 0.5s;
+    margin-bottom: 1rem;
   }
-
-  #feature_word{
-    font-size: 130%;
-  }
+  
   .container {
     width: 24rem;
   }
@@ -312,21 +355,29 @@ z-index: 0;
     width: 22rem;
     gap: 0rem;
   }
+
   #dictionary {
     width: 22rem;
+  }
+
+  .container {
+    max-width: 20rem;
+    min-width: 20rem;
+    transition: 0.5s;
   }
 }
 
 @media only screen and (max-width: 360px) {
   #hero_content #hero_text h1 {
     font-size: 180%;
-    margin-bottom: 1rem;
+    margin-bottom: .5rem;
     transition: 0.5s;
+    margin-top: 0;
   }
 
   #hero_content #hero_text h2 {
     font-size: 120%;
-    margin-bottom: 1rem;
+    margin-bottom: .5rem;
     transition: 0.5s;
   }
 
