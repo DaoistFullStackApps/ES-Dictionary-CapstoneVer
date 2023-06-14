@@ -32,16 +32,16 @@ export default function HeroContent({ isLoading, dictionaryData }) {
           </h2>
           {isLoading ? (
             <div className="max-w-md mx-auto bg-coffeeMate rounded-lg border-4 border-solid border-coffeeBrown shadow-coffeeDark shadow-sm p-4" id="dictionary_hero">
-              <h1 className="font-bold m-auto flex justify-center">
+              <div className="font-bold m-auto flex justify-center">
                 <Loading className="text-sm" />
-              </h1>
+              </div>
             </div>
           ) : (
             dictionaryData && (
               <div className="max-w-md mx-auto bg-coffeeMate rounded-lg shadow-coffeeDark shadow-sm p-4 border-4 border-solid border-coffeeBrown" id="dictionary_hero">
-                <h1 className="text-3xl text-coffeeDark font-bold italic mb-4 text-left">
+                <h2 className="text-3xl text-coffeeDark font-bold italic mb-4 text-left">
                   {dictionaryData.word}
-                </h1>
+                </h2>
                 <div className="mb-4">
                   <RenderImage dictionaryData={dictionaryData} />
                 </div>
