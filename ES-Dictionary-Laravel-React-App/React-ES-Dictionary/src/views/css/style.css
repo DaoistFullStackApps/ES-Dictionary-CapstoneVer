@@ -80,10 +80,15 @@ z-index: 0;
 
 @media only screen and (max-width: 640px) {
  #feature_word {
-  margin-right: -126px;
-  margin-left: -126px;
+  font-size: 49px;
   transition: 0.5s;
  }
+
+ .container {
+  max-width: 24rem;
+  min-width: 24rem;
+   transition: 0.5s;
+}
 }
 
 
@@ -95,6 +100,12 @@ z-index: 0;
   #dictionary_content {
     margin-bottom: 15rem;
     transition: 0.5s;
+  }
+
+  .container {
+    max-width: 24rem;
+    min-width: 24rem;
+     transition: 0.5s;
   }
 }
 
@@ -120,7 +131,7 @@ z-index: 0;
   }
 
   #hero_content #hero_text h2 {
-    font-size: 180%;
+    font-size: 160%;
     margin-bottom: .5rem;
     transition: 0.5s;
   }
@@ -141,7 +152,7 @@ z-index: 0;
   }
 
   #feature_word {
-    font-size: 48px;
+    font-size: 45px;
     transition: 0.5s;
    }
 }
@@ -192,7 +203,7 @@ z-index: 0;
   }
 
   #feature_word {
-    font-size: 45px;
+    font-size: 42px;
     transition: 0.5s;
    }
 }
@@ -228,15 +239,9 @@ z-index: 0;
   }
 
   #feature_word {
-    font-size: 43px;
+    font-size: 39px;
     transition: 0.5s;
    }
-}
-
-@media only screen and (max-width: 420px) {
-  #hero_content #hero_text h1 {
-    font-size: 210%;
-  }
 }
 
 @media only screen and (max-width: 414px) {
@@ -269,7 +274,6 @@ z-index: 0;
 
 @media only screen and (max-width: 400px) {
   #hero_content #hero_text h1 {
-    padding-top: 1rem;
     font-size: 210%;
     transition: 0.5s;
   }
@@ -296,7 +300,7 @@ z-index: 0;
   }
 
   #feature_word {
-    font-size: 40px;
+    font-size: 37px;
     transition: 0.5s;
    }
 }
@@ -320,6 +324,10 @@ z-index: 0;
 
   #dictionary {
     width: 90%;
+  }
+
+  #feature_word {
+    font-size: 37px;
   }
 }
 
@@ -364,6 +372,10 @@ z-index: 0;
     max-width: 20rem;
     min-width: 20rem;
     transition: 0.5s;
+  }
+
+  #feature_word {
+    font-size: 35px;
   }
 }
 

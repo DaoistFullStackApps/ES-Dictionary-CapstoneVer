@@ -27,7 +27,7 @@ export default function HeroContent({ isLoading, dictionaryData }) {
           </div>
         </div>
         <div className="container mx-auto px-4 mt-7">
-          <h2 className="max-w-30px text-6xl font-bold text-gray-800 mb-6 text-center" id="feature_word">
+          <h2 className="max-w-md mx-auto text-5xl font-bold text-gray-800 mb-6 text-center" id="feature_word">
             Featured Word
           </h2>
           {isLoading ? (
